@@ -6,4 +6,76 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="Floor Plan" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/undoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_round_undo_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addButton"
+        app:layout_constraintBottom_toTopOf="@id/playButton"
+        android:layout_marginStart="72dp"
+        app:maxImageSize="@dimen/design_fab_size_normal"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/redoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_round_redo_24"
+        app:layout_constraintTop_toBottomOf="@id/addButton"
+        app:layout_constraintBottom_toTopOf="@id/playButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="72dp"
+        app:maxImageSize="@dimen/design_fab_size_normal"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_round_add_24"
+        app:layout_constraintStart_toEndOf="@id/undoButton"
+        app:layout_constraintBottom_toTopOf="@id/playButton"
+        app:layout_constraintEnd_toStartOf="@id/redoButton"
+        app:maxImageSize="@dimen/design_fab_size_normal"
+        android:layout_marginBottom="16dp"
+        app:fabCustomSize="80dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+
+        app:srcCompat="@drawable/ic_round_play_arrow_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/undoButton"
+        app:layout_constraintEnd_toStartOf="@id/redoButton"
+        android:layout_marginBottom="16dp"
+        app:maxImageSize="@dimen/design_fab_size_normal"/>
+
+    <ImageButton
+        android:id="@+id/menuButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_round_menu_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@android:color/transparent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
