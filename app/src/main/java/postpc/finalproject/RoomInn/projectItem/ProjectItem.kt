@@ -8,8 +8,8 @@ import java.sql.Timestamp // needs to be changed into firebase timestamp bellow
 data class ProjectItem(
     val projectName: String,
     val lastUpdate: Timestamp
-) : Comparable<FurnitureCategoryItem> {
-    override fun compareTo(other: FurnitureCategoryItem): Int {
+) : Comparable<ProjectItem> {
+    override fun compareTo(other: ProjectItem): Int {
         return lastUpdate.compareTo(other.lastUpdate)
     }
 }
