@@ -28,7 +28,7 @@ class ProjectItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemHolder>() {
 
     override fun onBindViewHolder(holder: FurnitureCategoryItemHolder, position: Int) {
         val projectItem = _projects[position]
-        holder.projectName.text = projectItem.projectName
+//        holder.projectName.text = projectItem.projectName
 
     }
 

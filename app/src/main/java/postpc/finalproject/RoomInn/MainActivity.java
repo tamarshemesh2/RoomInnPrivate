@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
 
-            Toast toast = Toast.makeText(this, personName, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "hello", Toast.LENGTH_LONG);
             toast.show();
         }
     }

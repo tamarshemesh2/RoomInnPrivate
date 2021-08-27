@@ -13,7 +13,7 @@ class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemH
 
     fun setItems(items: Map<String, Image>) {
         _category.clear()
-        items.forEach { _category.add(FurnitureCategoryItem(it.key,it.value)) }
+//        items.forEach { _category.add(FurnitureCategoryItem(it.key,it.value)) }
         notifyDataSetChanged()
     }
 
