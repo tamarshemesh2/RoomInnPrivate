@@ -1,11 +1,13 @@
 package postpc.finalproject.RoomInn;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -20,12 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-
-
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-
-import java.util.Arrays;
 
 
 public class LoginActivity extends AppCompatActivity{
@@ -45,11 +41,18 @@ public class LoginActivity extends AppCompatActivity{
             logInOnSuccess();
         }
 
-        // setup view:
         setContentView(R.layout.activity_login);
+
 
         // setup login with google:
         SignInButton googleLogInButton = findViewById(R.id.google_log_in_button);
+        googleLogInButton.setEnabled(false);
+        googleLogInButton.setVisibility(View.GONE);
+
+        ImageView googleViewButton = findViewById(R.id.google_image);
+        googleViewButton.setEnabled(true);
+        googleViewButton.setVisibility(View.VISIBLE);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -65,6 +68,14 @@ public class LoginActivity extends AppCompatActivity{
         // setup login with facebook:
         callbackManager = CallbackManager.Factory.create();
         facebookLogInButton = findViewById(R.id.facebook_log_in_button);
+        facebookLogInButton.setEnabled(false);
+        facebookLogInButton.setVisibility(View.GONE);
+
+        ImageView facebookViewButton = findViewById(R.id.facebook_image);
+        facebookViewButton.setEnabled(true);
+        facebookViewButton.setVisibility(View.VISIBLE);
+
+
 //        facebookLogInButton.setPermissions(Arrays.asList(...));
         facebookLogInButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -76,24 +87,35 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onCancel() {
                 Log.d("facebook login", "cancel");
-
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d("facebook login", error.toString());
-
             }
+        });
+
+        Button button = findViewById(R.id.login_submit_button);
+        button.setOnClickListener(v -> {
+            facebookLogInButton.callOnClick();
+        });
+
+        googleViewButton.setOnClickListener(v -> {
+            facebookLogInButton.callOnClick();
+        });
+
+        facebookViewButton.setOnClickListener(v -> {
+            facebookLogInButton.callOnClick();
         });
     }
 
-    @Override
-    protected void onStart() {
-        // this function will activate if the user signed up with google before
-        super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        logInOnSuccess();
-    }
+//    @Override
+//    protected void onStart() {
+//        // this function will activate if the user signed up with google before
+//        super.onStart();
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        logInOnSuccess();
+//    }
 
     private void googleSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
