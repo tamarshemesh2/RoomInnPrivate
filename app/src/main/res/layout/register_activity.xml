@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    tools:ignore="ExtraText">
+
+    <View
+        android:id="@+id/middle_line_border"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toBottomOf="@+id/roomInn_title"
+        app:layout_constraintBottom_toTopOf="@id/register_edit_text"
+        tools:background="@color/black_overlay"
+        android:background="@color/white"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/middle_line_border"
+        android:src="@drawable/background_watercolor"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/middle_line_border"
+        android:background="#3CFFC9B9"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/MyProjects_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/dosis_medium"
+        android:gravity="center"
+        android:text="Register"
+        android:textColor="@color/dark_purple"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/border"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/MyProjects_title"
+        app:layout_constraintStart_toStartOf="@id/MyProjects_title"
+        app:layout_constraintEnd_toEndOf="@id/MyProjects_title"
+        android:background="@color/light_pink" />
+
+    <TextView
+        android:id="@+id/roomInn_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lobster"
+        android:gravity="center"
+        android:text="in RoomInn"
+        android:textColor="@color/dark_purple"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/border"
+        tools:layout_editor_absoluteX="0dp" />
+
+
+
+    <EditText
+        android:id="@+id/register_edit_text"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:cursorVisible="true"
+        android:fontFamily="@font/dosis_medium"
+        android:hint="Name"
+        android:text=""
+        android:textSize="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:autofillHints="Name"
+        android:textColorHint="#818180"/>
+
+    <EditText
+        android:id="@+id/register_password_text"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:cursorVisible="true"
+        android:fontFamily="@font/dosis_medium"
+        android:hint="password"
+        android:text=""
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@id/register_edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="Name"
+        android:textColorHint="#818180"/>
+
+
+    <EditText
+        android:id="@+id/register_re_enter_password_text"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:cursorVisible="true"
+        android:fontFamily="@font/dosis_medium"
+        android:hint="re-enter password"
+        android:text=""
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@id/register_password_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="Name"
+        android:textColorHint="#818180"/>
+
+    <Button
+        android:id="@+id/register_submit_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/dosis_medium"
+        android:textAllCaps="false"
+        android:background="@drawable/round_style"
+        app:backgroundTint="@color/dark_purple"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Register"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toBottomOf="@id/register_re_enter_password_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

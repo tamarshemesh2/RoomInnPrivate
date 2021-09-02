@@ -1,13 +1,17 @@
 package postpc.finalproject.RoomInn;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -21,14 +25,27 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class LoginActivity extends AppCompatActivity{
     int RC_SIGN_IN = 0;
-    GoogleSignInClient mGoogleSignInClient;
-    CallbackManager callbackManager;
+    String validateEmailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}";
+
+    private GoogleSignInClient mGoogleSignInClient;
+    private CallbackManager callbackManager;
     private LoginButton facebookLogInButton;
+    Button registerButton;
+    EditText inputEmail;
+    EditText inputPassword;
+    Button logInButton;
+    ProgressDialog progressDialog;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +81,10 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
+        googleViewButton.setOnClickListener(v -> {
+            googleLogInButton.callOnClick();
+        });
+
 
         // setup login with facebook:
         callbackManager = CallbackManager.Factory.create();
@@ -95,18 +116,67 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
-        Button button = findViewById(R.id.login_submit_button);
-        button.setOnClickListener(v -> {
-            facebookLogInButton.callOnClick();
-        });
-
-        googleViewButton.setOnClickListener(v -> {
-            facebookLogInButton.callOnClick();
-        });
-
         facebookViewButton.setOnClickListener(v -> {
             facebookLogInButton.callOnClick();
         });
+
+
+        // log in with firebase
+        registerButton = findViewById(R.id.register_from_login_button);
+        logInButton = findViewById(R.id.login_submit_button);
+
+        registerButton.setOnClickListener(v -> {
+            startActivity(new Intent(this, RegisterActivity.class));
+        });
+
+        logInButton.setOnClickListener(v -> {
+            preformFirebaseLogin();
+        });
+    }
+
+    private void preformFirebaseLogin() {
+        inputEmail = findViewById(R.id.login_email_text);
+        inputPassword = findViewById(R.id.login_password_text);
+        progressDialog = new ProgressDialog(this);
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        String emailText = inputEmail.getText().toString();
+        String passwordText = inputPassword.getText().toString();
+
+
+        if (!emailText.matches(validateEmailPattern)) {
+            inputEmail.setError("Enter valid e-mail");
+        } else if (passwordText.isEmpty() || passwordText.length() < 6) {
+            inputPassword.setError("Enter proper password");
+        } else {
+            progressDialog.setTitle("Login");
+            progressDialog.setMessage("Please waite");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+
+            mAuth.signInWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        progressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_LONG)
+                                .show();
+                        getToMainActivity();
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this, ""+task.getException(), Toast.LENGTH_LONG)
+                                .show();
+                    }
+                }
+            });
+        }
+    }
+
+    private void getToMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 //    @Override
