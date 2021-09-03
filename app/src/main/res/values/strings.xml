@@ -17,5 +17,12 @@
     <!-- FaceBook login need these strings:   -->
     <string name="facebook_app_id">895406741376685</string>
     <string name="fb_login_protocol_scheme">fb895406741376685</string>
+    <string name="color">color:</string>
+    <string name="enable_free_scaling">enable free scaling</string>
+    <string name="edit_furniture">Edit furniture:</string>
+    <string name="width">width:</string>
+    <string name="height">height:</string>
+    <string name="todo">TODO</string>
+    <string name="location">location:</string>
 
 </resources>

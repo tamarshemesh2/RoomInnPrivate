@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import postpc.finalproject.RoomInn.R
+import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.models.Bed
 import postpc.finalproject.RoomInn.models.Point3D
 
@@ -21,6 +23,9 @@ class FloorPlanFragment : Fragment() {
 
     companion object {
         fun newInstance() = FloorPlanFragment()
+    }
+    private val projectViewModel: ProjectViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(ProjectViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -46,8 +51,13 @@ class FloorPlanFragment : Fragment() {
         val canvas: RelativeLayout = view.findViewById(R.id.floorPlan)// Your Viewgroup
         val addFab: FloatingActionButton = view.findViewById(R.id.addButton)
         var toAddFurniture: Boolean = true
+
         canvas.setOnTouchListener { v, event ->
             if (toAddFurniture){
+                projectViewModel.currentX = event.rawX
+                projectViewModel.currentY = event.rawY
+                projectViewModel.newFurniture = true
+
             furnitureList+=FurnitureOnBoard(this.requireContext(), Bed(Point3D(),color = "#FFFFFFFF")
                 ,resources.getDrawable(R.drawable.ic_baseline_edit_24),canvas,event.x,event.y); }
             toAddFurniture=false

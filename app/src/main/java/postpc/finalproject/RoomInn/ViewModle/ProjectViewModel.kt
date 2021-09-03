@@ -10,6 +10,10 @@ class ProjectViewModel: ViewModel() {
     lateinit var projectName: String
     var loadingStage : LoadingStage = LoadingStage.SUCCESS
 
-    var furnitureToAdd : Furniture? = null
+    var currentX :Float = 0f
+    var currentY : Float = 0f
+    var furniture : Furniture? = null
+    var newFurniture: Boolean = true
+
 
 }
