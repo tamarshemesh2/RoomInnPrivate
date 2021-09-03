@@ -179,6 +179,7 @@ public class LoginActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
+// TODO: uncomment this! (do not delete this piece of code!)
 //    @Override
 //    protected void onStart() {
 //        // this function will activate if the user signed up with google before
