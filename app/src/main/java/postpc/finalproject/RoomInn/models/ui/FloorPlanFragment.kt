@@ -6,11 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.models.Bed
 import postpc.finalproject.RoomInn.models.Point3D
@@ -18,6 +22,9 @@ import postpc.finalproject.RoomInn.models.Point3D
 
 class FloorPlanFragment : Fragment() {
     var furnitureList:List<FurnitureOnBoard> = listOf()
+    lateinit var drawerLayout: DrawerLayout
+    lateinit var navigationView: NavigationView
+    lateinit var hamburger: ImageView;
 
     companion object {
         fun newInstance() = FloorPlanFragment()
@@ -46,6 +53,13 @@ class FloorPlanFragment : Fragment() {
         val canvas: RelativeLayout = view.findViewById(R.id.floorPlan)// Your Viewgroup
         val addFab: FloatingActionButton = view.findViewById(R.id.addButton)
         var toAddFurniture: Boolean = true
+        // find hamburger views:
+        drawerLayout = view.findViewById(R.id.draw_layout)
+        navigationView = view.findViewById(R.id.hamburger_settings_navigation_layout)
+        hamburger = view.findViewById(R.id.hamburgerMenuButton)
+
+
+
         canvas.setOnTouchListener { v, event ->
             if (toAddFurniture){
             furnitureList+=FurnitureOnBoard(this.requireContext(), Bed(Point3D(),color = "#FFFFFFFF")
@@ -56,10 +70,11 @@ class FloorPlanFragment : Fragment() {
         addFab.setOnClickListener {
             toAddFurniture=true
             Toast.makeText(this.requireContext(),"Tap where you wish to add new furniture", Toast.LENGTH_LONG).show();
-
-
         }
 
+        hamburger.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
 
     }
 
