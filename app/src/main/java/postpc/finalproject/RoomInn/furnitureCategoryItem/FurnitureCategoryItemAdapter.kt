@@ -1,5 +1,6 @@
 package postpc.finalproject.RoomInn.furnitureCategoryItem
 
+import android.graphics.drawable.Drawable
 import android.media.Image
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,9 +12,9 @@ class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemH
 
     private val _category: MutableList<FurnitureCategoryItem> = ArrayList()
 
-    fun setItems(items: Map<String, Image>) {
+    fun setItems(items: Map<String, Drawable>) {
         _category.clear()
-//        items.forEach { _category.add(FurnitureCategoryItem(it.key,it.value)) }
+        items.forEach { _category.add(FurnitureCategoryItem(it.key,it.value)) }
         notifyDataSetChanged()
     }
 
@@ -27,8 +28,7 @@ class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemH
     override fun onBindViewHolder(holder: FurnitureCategoryItemHolder, position: Int) {
         val furnitureCategory = _category[position]
         holder.categoryTitle.text = furnitureCategory.furnitureCategory
-//        holder.categoryImg. = furnitureCategory.image
-// need to set the right img
+        holder.categoryImg.setImageDrawable(furnitureCategory.image)
     }
 
     override fun getItemCount(): Int {

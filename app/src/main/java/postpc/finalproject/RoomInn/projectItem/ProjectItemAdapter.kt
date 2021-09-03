@@ -3,32 +3,30 @@ package postpc.finalproject.RoomInn.projectItem
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import postpc.finalproject.RoomInn.R
-import postpc.finalproject.RoomInn.furnitureCategoryItem.FurnitureCategoryItem
-import postpc.finalproject.RoomInn.furnitureCategoryItem.FurnitureCategoryItemHolder
-import java.sql.Timestamp
 
 
-class ProjectItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemHolder>() {
+class ProjectItemAdapter : RecyclerView.Adapter<ProjectItemHolder>() {
 
-    private val _projects: MutableList<FurnitureCategoryItem> = ArrayList()
+    private val _projects: MutableList<ProjectItem> = ArrayList()
 
     fun setItems(items: Map<String, Timestamp>) {
         _projects.clear()
-        items.forEach { _projects.add(FurnitureCategoryItem(it.key, it.value)) }
+        items.forEach { _projects.add(ProjectItem(it.key, it.value)) }
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FurnitureCategoryItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectItemHolder {
         val context = parent.context
         val view = LayoutInflater.from(context)
             .inflate(R.layout.item_project, parent, false)
-        return FurnitureCategoryItemHolder(view)
+        return ProjectItemHolder(view)
     }
 
-    override fun onBindViewHolder(holder: FurnitureCategoryItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProjectItemHolder, position: Int) {
         val projectItem = _projects[position]
-//        holder.projectName.text = projectItem.projectName
+        holder.projectName.text = projectItem.projectName
 
     }
 

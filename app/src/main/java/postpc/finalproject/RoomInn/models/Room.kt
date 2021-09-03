@@ -2,6 +2,7 @@ package postpc.finalproject.RoomInn
 
 import postpc.finalproject.RoomInn.models.Door
 import postpc.finalproject.RoomInn.models.Furniture
+import postpc.finalproject.RoomInn.models.Point3D
 import postpc.finalproject.RoomInn.models.Window
 
 data class Room (var Corners : MutableList<Point3D> = mutableListOf(),

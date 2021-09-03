@@ -1,13 +1,13 @@
-package postpc.finalproject.RoomInn
+package postpc.finalproject.RoomInn.models
 
-data class Point3D(var x: Int = 0,
-                   var y: Int = 0,
-                   var z: Int = 0) {
+data class Point3D(var x: Float = 0f,
+                   var y: Float = 0f,
+                   var z: Float = 0f) {
 
-    fun add(second : Point3D) {
-        x += second.x
-        y += second.y
-        z += second.y
+    fun add(step : Point3D) {
+        x += step.x
+        y += step.y
+        z += step.y
     }
 
 

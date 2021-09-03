@@ -1,8 +1,6 @@
 package postpc.finalproject.RoomInn.models
 
-import postpc.finalproject.RoomInn.Point3D
-
 data class Door(var location : Point3D,
-                var length : Int = 190,
-                var width : Int = 80) {
+                var length : Float = 190f,
+                var width : Float = 80f) {
 }

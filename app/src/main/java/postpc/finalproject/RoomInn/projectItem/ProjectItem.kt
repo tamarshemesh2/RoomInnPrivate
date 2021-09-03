@@ -1,8 +1,7 @@
 package postpc.finalproject.RoomInn.projectItem
 
 import postpc.finalproject.RoomInn.furnitureCategoryItem.FurnitureCategoryItem
-import java.sql.Timestamp // needs to be changed into firebase timestamp bellow
-//import com.google.firebase.Timestamp
+import com.google.firebase.Timestamp
 
 
 data class ProjectItem(

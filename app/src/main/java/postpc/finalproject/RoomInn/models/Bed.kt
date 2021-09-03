@@ -1,8 +1,11 @@
 package postpc.finalproject.RoomInn.models
 
-import postpc.finalproject.RoomInn.Point3D
-
-class Bed(location : Point3D, length : Int = 190, width : Int = 90, height : Int = 40,
+class Bed(location : Point3D, length : Float = 190f, width : Float = 90f, height : Float = 40f,
           color : String): Furniture(location,length,width, height,color)
 {
+    override fun scale(scaleFactor: Float): Point3D {
+        length *=scaleFactor
+        width *=scaleFactor
+        return Point3D(width,length,height)
+    }
 }
