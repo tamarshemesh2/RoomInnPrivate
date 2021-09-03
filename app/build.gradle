@@ -54,6 +54,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
     implementation 'com.github.Almeros:android-gesture-detectors:v1.0'
     implementation 'com.github.lau1944:Zoom-Drag-Rotate-ImageView:1.0.0'
+    implementation 'com.github.duanhong169:colorpicker:1.1.6'
     // P.S: For Android Studio versions below 3.0, use compile keyword
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
 

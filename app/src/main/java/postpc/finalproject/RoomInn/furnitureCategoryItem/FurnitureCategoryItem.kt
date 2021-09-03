@@ -7,7 +7,7 @@ import java.sql.Timestamp // needs to be changed into firebase timestamp bellow
 
 data class FurnitureCategoryItem(
         val furnitureCategory: String,
-        val image: Drawable
+        val imageID: Int
 ) : Comparable<FurnitureCategoryItem> {
     override fun compareTo(other: FurnitureCategoryItem): Int {
         return furnitureCategory.compareTo(other.furnitureCategory)

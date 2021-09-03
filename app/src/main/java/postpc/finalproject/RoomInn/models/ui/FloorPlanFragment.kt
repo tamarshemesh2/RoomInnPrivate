@@ -13,9 +13,11 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import postpc.finalproject.RoomInn.R
+import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.models.Bed
 import postpc.finalproject.RoomInn.models.Point3D
 
@@ -28,6 +30,9 @@ class FloorPlanFragment : Fragment() {
 
     companion object {
         fun newInstance() = FloorPlanFragment()
+    }
+    private val projectViewModel: ProjectViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(ProjectViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -59,9 +64,12 @@ class FloorPlanFragment : Fragment() {
         hamburger = view.findViewById(R.id.hamburgerMenuButton)
 
 
-
         canvas.setOnTouchListener { v, event ->
             if (toAddFurniture){
+                projectViewModel.currentX = event.rawX
+                projectViewModel.currentY = event.rawY
+                projectViewModel.newFurniture = true
+
             furnitureList+=FurnitureOnBoard(this.requireContext(), Bed(Point3D(),color = "#FFFFFFFF")
                 ,resources.getDrawable(R.drawable.ic_baseline_edit_24),canvas,event.x,event.y); }
             toAddFurniture=false
