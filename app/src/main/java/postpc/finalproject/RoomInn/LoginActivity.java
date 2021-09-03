@@ -52,11 +52,11 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         // user  is already logged in with facebook
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if (isLoggedIn) {
-            logInOnSuccess();
-        }
+//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+//        if (isLoggedIn) {
+//            logInOnSuccess();
+//        }
 
         setContentView(R.layout.activity_login);
 
