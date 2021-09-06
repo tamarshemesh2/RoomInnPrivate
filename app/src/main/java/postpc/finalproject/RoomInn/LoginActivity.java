@@ -49,6 +49,8 @@ public class LoginActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+
         super.onCreate(savedInstanceState);
 
         // user  is already logged in with facebook

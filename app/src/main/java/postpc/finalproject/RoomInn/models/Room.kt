@@ -1,17 +1,14 @@
 package postpc.finalproject.RoomInn
 
-import postpc.finalproject.RoomInn.models.Door
-import postpc.finalproject.RoomInn.models.Furniture
-import postpc.finalproject.RoomInn.models.Point3D
-import postpc.finalproject.RoomInn.models.Window
+import android.graphics.drawable.VectorDrawable
+import postpc.finalproject.RoomInn.models.*
 
 data class Room(
     var Corners: MutableList<Point3D> = mutableListOf(),
-    var furniture: MutableList<Furniture> = mutableListOf(),
-    var height: Int = 0,
+    var furniture: Map<String, Furniture> = mutableMapOf(),
     var width: Int = 0,
     var windows: MutableList<Window> = mutableListOf(),
     var doors: MutableList<Door> = mutableListOf(),
-    val displayRatio: Float = 1f
+    val displayRatio: Float = 1f,
 ) {
 }

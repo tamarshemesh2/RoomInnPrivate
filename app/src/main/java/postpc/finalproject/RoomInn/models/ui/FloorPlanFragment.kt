@@ -1,6 +1,8 @@
 package postpc.finalproject.RoomInn.models.ui
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,16 +16,20 @@ import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.models.Bed
 import postpc.finalproject.RoomInn.models.Point3D
+import postpc.finalproject.RoomInn.models.RoomVectorFactory
+import postpc.finalproject.RoomInn.models.RoomVectorFactory.PathData
+import java.util.*
 
 
 class FloorPlanFragment : Fragment() {
-    var furnitureList:List<FurnitureOnBoard> = listOf()
+    var furnitureList: List<FurnitureOnBoard> = listOf()
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
     lateinit var hamburger: ImageView;
@@ -31,6 +37,7 @@ class FloorPlanFragment : Fragment() {
     companion object {
         fun newInstance() = FloorPlanFragment()
     }
+
     private val projectViewModel: ProjectViewModel by lazy {
         ViewModelProvider(requireActivity()).get(ProjectViewModel::class.java)
     }
@@ -47,7 +54,7 @@ class FloorPlanFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // set the view direction -> LTR
@@ -57,7 +64,21 @@ class FloorPlanFragment : Fragment() {
         // find all views
         val canvas: RelativeLayout = view.findViewById(R.id.floorPlan)// Your Viewgroup
         val addFab: FloatingActionButton = view.findViewById(R.id.addButton)
-        var toAddFurniture: Boolean = true
+        var toAddFurniture: Boolean = false
+        //add all furniture to board
+        for (fur in projectViewModel.room.furniture.values) {
+            FurnitureOnBoard(
+                projectViewModel,
+                requireContext(),
+                fur,
+                resources.getDrawable(R.drawable.ic_round_redo_24),
+                canvas,
+                fur.location.x,
+                fur.location.y
+            )
+
+        }
+        canvas.setBackgroundResource(R.drawable.floor_plan)
         // find hamburger views:
         drawerLayout = view.findViewById(R.id.draw_layout)
         navigationView = view.findViewById(R.id.hamburger_settings_navigation_layout)
@@ -65,19 +86,23 @@ class FloorPlanFragment : Fragment() {
 
 
         canvas.setOnTouchListener { v, event ->
-            if (toAddFurniture){
+            if (toAddFurniture) {
                 projectViewModel.currentX = event.rawX
                 projectViewModel.currentY = event.rawY
                 projectViewModel.newFurniture = true
-
-            furnitureList+=FurnitureOnBoard(this.requireContext(), Bed(Point3D(),color = "#FFFFFFFF")
-                ,resources.getDrawable(R.drawable.ic_baseline_edit_24),canvas,event.x,event.y); }
-            toAddFurniture=false
+                Navigation.findNavController(v)
+                    .navigate(R.id.action_floorPlanFragment_to_addFurnitureFragment2)
+            }
+            toAddFurniture = false
             return@setOnTouchListener true
         }
         addFab.setOnClickListener {
-            toAddFurniture=true
-            Toast.makeText(this.requireContext(),"Tap where you wish to add new furniture", Toast.LENGTH_LONG).show();
+            toAddFurniture = true
+            Toast.makeText(
+                this.requireContext(),
+                "Tap where you wish to add new furniture",
+                Toast.LENGTH_LONG
+            ).show();
         }
 
         hamburger.setOnClickListener {

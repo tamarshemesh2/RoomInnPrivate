@@ -4,9 +4,6 @@ import android.content.Context;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
-import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.View;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
@@ -20,13 +17,11 @@ public class RotateZoomImageViewFurniture extends AppCompatImageView implements 
     private static final int DRAG = 1;
     private static final int ZOOM = 2;
 
-    private int toRotate = 0;
-
     private int mode = NONE;
     private float oldDist = 1f;
     private float d = 0f;
-    private float newRot = 0f;
-    float scalediff;
+    public float newRot = 0f;
+    public float scaleDiff;
 
     public RotateZoomImageViewFurniture(Context context) {
         super(context);
@@ -67,9 +62,9 @@ public class RotateZoomImageViewFurniture extends AppCompatImageView implements 
      * pointers and rotates the image accordingly.  As the user
      * rotates their fingers, the image will follow.
      */
-    RelativeLayout.LayoutParams parms;
-    int startwidth;
-    int startheight;
+    RelativeLayout.LayoutParams params;
+    int startWidth;
+    int startHeight;
     float dx = 0, dy = 0, x = 0, y = 0;
     float angle = 0;
 
@@ -87,15 +82,15 @@ public class RotateZoomImageViewFurniture extends AppCompatImageView implements 
         return (float) Math.round(Math.toDegrees(radians) / 90) * 90;
     }
     public void setPlace(float x, float y){
-        parms = (RelativeLayout.LayoutParams) this.getLayoutParams();
+        params = (RelativeLayout.LayoutParams) this.getLayoutParams();
 
-        parms.leftMargin = (int) (x);
-        parms.topMargin = (int) (y);
+        params.leftMargin = (int) (x);
+        params.topMargin = (int) (y);
 
-        parms.rightMargin = 0;
-        parms.bottomMargin = 0;
-        parms.rightMargin = parms.leftMargin + (5 * parms.width);
-        parms.bottomMargin = parms.topMargin + (10 * parms.height);
+        params.rightMargin = 0;
+        params.bottomMargin = 0;
+        params.rightMargin = params.leftMargin + (5 * params.width);
+        params.bottomMargin = params.topMargin + (10 * params.height);
 
     }
 
@@ -106,16 +101,11 @@ public class RotateZoomImageViewFurniture extends AppCompatImageView implements 
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                startwidth = parms.width;
-                startheight = parms.height;
-                dx = event.getRawX() - parms.leftMargin;
-                dy = event.getRawY() - parms.topMargin;
-
-                if ( toRotate > 0 && toRotate < 10) {
-                    Log.d("ROT", "cur toRotate is - "+toRotate);
-                    view.animate().rotationBy(90).setDuration(0).setInterpolator(new LinearInterpolator()).start();
-                }
+                params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                startWidth = params.width;
+                startHeight = params.height;
+                dx = event.getRawX() - params.leftMargin;
+                dy = event.getRawY() - params.topMargin;
 
                 mode = DRAG;
                 break;
@@ -135,21 +125,20 @@ public class RotateZoomImageViewFurniture extends AppCompatImageView implements 
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                toRotate = 0;
                 if (mode == DRAG) {
 
                     x = event.getRawX();
                     y = event.getRawY();
-                    parms.leftMargin = (int) (x - dx);
-                    parms.topMargin = (int) (y - dy);
+                    params.leftMargin = (int) (x - dx);
+                    params.topMargin = (int) (y - dy);
 
-                    parms.rightMargin = 0;
-                    parms.bottomMargin = 0;
-                    parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                    parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                    params.rightMargin = 0;
+                    params.bottomMargin = 0;
+                    params.rightMargin = params.leftMargin + (5 * params.width);
+                    params.bottomMargin = params.topMargin + (10 * params.height);
 
                     fixing();
-                    view.setLayoutParams(parms);
+                    view.setLayoutParams(params);
 
 
                 } else if (mode == ZOOM) {
@@ -167,7 +156,7 @@ public class RotateZoomImageViewFurniture extends AppCompatImageView implements 
                         if (newDist > 10f) {
                             float scale = newDist / oldDist * view.getScaleX();
                             if (scale > 0.6) {
-                                scalediff = scale;
+                                scaleDiff = scale;
                                 view.setScaleX(scale);
                                 view.setScaleY(scale);
                             }
@@ -176,16 +165,21 @@ public class RotateZoomImageViewFurniture extends AppCompatImageView implements 
                         x = event.getRawX();
                         y = event.getRawY();
 
-                        parms.leftMargin = (int) ((x - dx) + scalediff);
-                        parms.topMargin = (int) ((y - dy) + scalediff);
+                        params.leftMargin = (int) ((x - dx) + scaleDiff);
+                        params.topMargin = (int) ((y - dy) + scaleDiff);
 
-                        parms.rightMargin = 0;
-                        parms.bottomMargin = 0;
-                        parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                        parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                        params.rightMargin = 0;
+                        params.bottomMargin = 0;
+                        params.rightMargin = params.leftMargin + (5 * params.width);
+                        params.bottomMargin = params.topMargin + (10 * params.height);
+
+
                         fixing();
-                        view.setLayoutParams(parms);
+                        view.setLayoutParams(params);
                     }
+                    if (newRot>0){
+                    view.animate().rotationBy(newRot).setDuration(0).setInterpolator(new LinearInterpolator()).start();}
+
                 }
 
                 break;
@@ -195,21 +189,21 @@ public class RotateZoomImageViewFurniture extends AppCompatImageView implements 
     }
     public void fixing()
     {
-        if (parms.leftMargin < 0){
-            parms.leftMargin=0;
-            parms.rightMargin = parms.leftMargin + (5 * parms.width);
+        if (params.leftMargin < 0){
+            params.leftMargin=0;
+            params.rightMargin = params.leftMargin + (5 * params.width);
         }
-        if (parms.topMargin < 0){
-            parms.topMargin=0;
-            parms.bottomMargin = parms.topMargin + (10 * parms.height);
+        if (params.topMargin < 0){
+            params.topMargin=0;
+            params.bottomMargin = params.topMargin + (10 * params.height);
         }
-        if (parms.bottomMargin<0){
-            parms.bottomMargin=0;
-            parms.topMargin =  (10 * parms.height);
+        if (params.bottomMargin<0){
+            params.bottomMargin=0;
+            params.topMargin =  (10 * params.height);
         }
-        if (parms.rightMargin<0){
-            parms.rightMargin=0;
-            parms.leftMargin =(5 * parms.height);
+        if (params.rightMargin<0){
+            params.rightMargin=0;
+            params.leftMargin =(5 * params.height);
         }
 
 

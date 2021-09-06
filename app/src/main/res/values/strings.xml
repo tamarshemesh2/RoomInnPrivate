@@ -24,5 +24,6 @@
     <string name="height">height:</string>
     <string name="todo">TODO</string>
     <string name="location">location:</string>
+    <string name="rotation_angel">Rotation angel:</string>
 
 </resources>

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_floorPlanFragment_to_profileFragment2"
             app:destination="@id/profileFragment2" />
+        <action
+            android:id="@+id/action_floorPlanFragment_to_editFurnitureFragment"
+            app:destination="@id/editFurnitureFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFurnitureFragment2"

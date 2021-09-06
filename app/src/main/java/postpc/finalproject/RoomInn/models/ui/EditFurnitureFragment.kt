@@ -1,27 +1,18 @@
 package postpc.finalproject.RoomInn.models.ui
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import postpc.finalproject.RoomInn.R
-import postpc.finalproject.RoomInn.furnitureCategoryItem.FurnitureCategoryItemAdapter
 import top.defaults.colorpicker.ColorPickerPopup
 
-import postpc.finalproject.RoomInn.MainActivity
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import top.defaults.colorpicker.ColorPickerPopup.ColorPickerObserver
 
@@ -49,23 +40,28 @@ class EditFurnitureFragment : Fragment() {
         val heightEditText = view.findViewById<EditText>(R.id.heigh_edit_text)
         val lengthEditText = view.findViewById<EditText>(R.id.length_edit_text)
         val locationText = view.findViewById<TextView>(R.id.location_inner_text)
+        val rotateText = view.findViewById<TextView>(R.id.rotate_inner_text)
+        val rotateBtn = view.findViewById<ImageButton>(R.id.rotate_btn)
+
         val freeRatioCheckBox = view.findViewById<CheckBox>(R.id.enable_ratio_checkbox)
         val furnitureImageView = view.findViewById<ImageView>(R.id.furniture_img)
         val saveFab = view.findViewById<FloatingActionButton>(R.id.save_fab)
 
         val furniture = projectViewModel.furniture!!
 
-        if (projectViewModel.newFurniture) {
-            locationText.text = " ${furniture.location.x} , ${furniture.location.y}"
-            widthEditText.setText(furniture.width.toString())
-            lengthEditText.setText(furniture.length.toString())
-            heightEditText.setText(furniture.height.toString())
-            freeRatioCheckBox.isChecked = false
-            //todo : choose furniture img according to type
-        }
+
+        colorBtn.setColorFilter(furniture.color)
+        locationText.text = " ${furniture.location.x} , ${furniture.location.y}"
+        widthEditText.setText(furniture.width.toString())
+        lengthEditText.setText(furniture.length.toString())
+        heightEditText.setText(furniture.height.toString())
+        rotateText.text = furniture.rotation.toString()
+        freeRatioCheckBox.isChecked = projectViewModel.roomEnableFurnitureOnBoard
+        //todo : choose furniture img according to type
+
 
         colorBtn.setOnClickListener { v ->
-            ColorPickerPopup.Builder(context).initialColor(Color.parseColor(furniture.color))
+            ColorPickerPopup.Builder(context).initialColor(furniture.color)
                 .enableBrightness(true) // enable color brightness
                 .enableAlpha(false) // enable color alpha
                 .okTitle("Choose") // this is top right
@@ -75,7 +71,7 @@ class EditFurnitureFragment : Fragment() {
                     object : ColorPickerObserver() {
                         override fun onColorPicked(color: Int) {
                             colorBtn.setColorFilter(color)
-                            furniture.color = color.toString()
+                            furniture.color = color
                         }
                     })
         }
@@ -87,11 +83,19 @@ class EditFurnitureFragment : Fragment() {
             furniture.freeScale = bool
         }
 
+        rotateBtn.setOnClickListener {
+            furniture.rotation = (furniture.rotation + 90) % 360
+            rotateText.text = furniture.rotation.toString()
+        }
+
         saveFab.setOnClickListener {
             furniture.height = heightEditText.text.toString().toFloat()
             furniture.length = lengthEditText.text.toString().toFloat()
             furniture.width = widthEditText.text.toString().toFloat()
             projectViewModel.furniture = furniture
+            projectViewModel.room.furniture += Pair(projectViewModel.furniture!!.id, projectViewModel.furniture!!)
+            projectViewModel.roomEnableFurnitureOnBoard = freeRatioCheckBox.isChecked
+
             Navigation.findNavController(it)
                 .navigate(R.id.action_editFurnitureFragment_to_floorPlanFragment)
         }

@@ -6,7 +6,8 @@ import postpc.finalproject.RoomInn.Room
 import postpc.finalproject.RoomInn.models.Furniture
 
 class ProjectViewModel: ViewModel() {
-    lateinit var room : Room
+    var roomEnableFurnitureOnBoard: Boolean = false
+    var room : Room = Room()
     lateinit var projectName: String
     var loadingStage : LoadingStage = LoadingStage.SUCCESS
 

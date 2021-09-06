@@ -71,7 +71,7 @@
         android:id="@+id/width_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:enabled="false"
         android:inputType="number"
         android:text="267"
@@ -94,7 +94,7 @@
         android:id="@+id/length_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:enabled="false"
         android:inputType="number"
         android:text="267"
@@ -117,7 +117,7 @@
         android:id="@+id/heigh_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:enabled="false"
         android:inputType="number"
         android:text="267"
@@ -125,6 +125,43 @@
         app:layout_constraintStart_toEndOf="@id/height_text"
         app:layout_constraintTop_toTopOf="@id/height_text"
         tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/rotate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/dosis_medium"
+        android:text="@string/rotation_angel"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@id/color_text"
+        app:layout_constraintTop_toBottomOf="@id/height_text" />
+
+    <TextView
+        android:id="@+id/rotate_inner_text"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:textSize="22sp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@id/rotate_text"
+        app:layout_constraintStart_toEndOf="@id/rotate_text"
+        app:layout_constraintTop_toTopOf="@id/rotate_text"
+        tools:ignore="LabelFor" />
+
+    <ImageButton
+        android:id="@+id/rotate_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_baseline_rotate_90_degrees_cw_24"
+        app:layout_constraintBottom_toBottomOf="@id/rotate_inner_text"
+        app:layout_constraintStart_toEndOf="@id/rotate_inner_text"
+        app:layout_constraintTop_toTopOf="@id/rotate_inner_text" />
 
     <TextView
         android:id="@+id/location_text"
@@ -135,18 +172,18 @@
         android:text="@string/location"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="@id/color_text"
-        app:layout_constraintTop_toBottomOf="@id/height_text" />
+        app:layout_constraintTop_toBottomOf="@id/rotate_text" />
 
     <TextView
         android:id="@+id/location_inner_text"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:enabled="false"
-        android:paddingTop="4dp"
-        android:text="1000 , 2000"
-        android:textSize="24sp"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:textSize="22sp"
+        android:text="1000 , 2000"
         app:layout_constraintBottom_toBottomOf="@id/location_text"
         app:layout_constraintStart_toEndOf="@id/location_text"
         app:layout_constraintTop_toTopOf="@id/location_text" />
@@ -166,12 +203,12 @@
         android:id="@+id/save_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/todo"
         android:src="@drawable/ic_outline_save_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/enable_ratio_checkbox"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintTop_toBottomOf="@id/enable_ratio_checkbox" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
