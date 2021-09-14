@@ -1,7 +1,7 @@
 package postpc.finalproject.RoomInn.ViewModle
 
 import androidx.lifecycle.ViewModel
-import postpc.finalproject.RoomInn.LoadingStage
+import postpc.finalproject.RoomInn.models.LoadingStage
 import postpc.finalproject.RoomInn.Room
 import postpc.finalproject.RoomInn.models.Furniture
 
@@ -15,6 +15,4 @@ class ProjectViewModel: ViewModel() {
     var currentY : Float = 0f
     var furniture : Furniture? = null
     var newFurniture: Boolean = true
-
-
 }

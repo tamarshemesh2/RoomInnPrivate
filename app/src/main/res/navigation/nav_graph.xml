@@ -6,7 +6,7 @@
     app:startDestination="@id/profileFragment2">
     <fragment
         android:id="@+id/profileFragment2"
-        android:name="postpc.finalproject.RoomInn.models.ui.ProfileFragment"
+        android:name="postpc.finalproject.RoomInn.ui.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment2_to_floorPlanFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/floorPlanFragment"
-        android:name="postpc.finalproject.RoomInn.models.ui.FloorPlanFragment"
+        android:name="postpc.finalproject.RoomInn.ui.FloorPlanFragment"
         android:label="FloorPlanFragment" >
         <action
             android:id="@+id/action_floorPlanFragment_to_addFurnitureFragment2"
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/addFurnitureFragment2"
-        android:name="postpc.finalproject.RoomInn.models.ui.AddFurnitureFragment"
+        android:name="postpc.finalproject.RoomInn.ui.AddFurnitureFragment"
         android:label="AddFurnitureFragment" >
         <action
             android:id="@+id/action_addFurnitureFragment2_to_floorPlanFragment"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/editFurnitureFragment"
-        android:name="postpc.finalproject.RoomInn.models.ui.EditFurnitureFragment"
+        android:name="postpc.finalproject.RoomInn.ui.EditFurnitureFragment"
         android:label="EditFurnitureFragment" >
         <action
             android:id="@+id/action_editFurnitureFragment_to_floorPlanFragment"

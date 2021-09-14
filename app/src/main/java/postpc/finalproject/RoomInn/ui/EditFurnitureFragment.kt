@@ -1,4 +1,4 @@
-package postpc.finalproject.RoomInn.models.ui
+package postpc.finalproject.RoomInn.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle

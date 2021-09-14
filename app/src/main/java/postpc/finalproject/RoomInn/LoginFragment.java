@@ -1,9 +1,4 @@
-// TODO: delete this file
-
 package postpc.finalproject.RoomInn;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
+
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -22,19 +23,19 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginFragment extends Fragment {
+
     int RC_SIGN_IN = 0;
     String validateEmailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}";
 
@@ -49,11 +50,14 @@ public class LoginActivity extends AppCompatActivity{
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        this.getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+    public LoginFragment() {
+        super(R.layout.login_fegment);
+        callbackManager = CallbackManager.Factory.create();
+    }
 
-        super.onCreate(savedInstanceState);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // user  is already logged in with facebook
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -62,15 +66,12 @@ public class LoginActivity extends AppCompatActivity{
             getToMainActivity();
         }
 
-        setContentView(R.layout.activity_login);
-
-
         // setup login with google:
-        SignInButton googleLogInButton = findViewById(R.id.google_log_in_button);
+        SignInButton googleLogInButton = view.findViewById(R.id.google_log_in_button);
         googleLogInButton.setEnabled(false);
         googleLogInButton.setVisibility(View.GONE);
 
-        ImageView googleViewButton = findViewById(R.id.google_image);
+        ImageView googleViewButton = view.findViewById(R.id.google_image);
         googleViewButton.setEnabled(true);
         googleViewButton.setVisibility(View.VISIBLE);
 
@@ -78,7 +79,7 @@ public class LoginActivity extends AppCompatActivity{
                 .requestEmail()
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         googleLogInButton.setOnClickListener(v -> {
             if (v.getId() == R.id.google_log_in_button) {
                 googleSignIn();
@@ -91,12 +92,11 @@ public class LoginActivity extends AppCompatActivity{
 
 
         // setup login with facebook:
-        callbackManager = CallbackManager.Factory.create();
-        facebookLogInButton = findViewById(R.id.facebook_log_in_button);
+        facebookLogInButton = view.findViewById(R.id.facebook_log_in_button);
         facebookLogInButton.setEnabled(false);
         facebookLogInButton.setVisibility(View.GONE);
 
-        ImageView facebookViewButton = findViewById(R.id.facebook_image);
+        ImageView facebookViewButton = view.findViewById(R.id.facebook_image);
         facebookViewButton.setEnabled(true);
         facebookViewButton.setVisibility(View.VISIBLE);
 
@@ -126,22 +126,26 @@ public class LoginActivity extends AppCompatActivity{
 
 
         // log in with firebase
-        registerButton = findViewById(R.id.register_from_login_button);
-        logInButton = findViewById(R.id.login_submit_button);
 
+        registerButton = view.findViewById(R.id.register_from_login_button);
+        logInButton = view.findViewById(R.id.login_submit_button);
         registerButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, RegisterActivity.class));
+            FragmentActivity activity = getActivity();
+            activity.getSupportFragmentManager().beginTransaction()
+                    .replace(activity.findViewById(R.id.fragment_frame).getId(), new RegisterFragment())
+                    .commit();
         });
 
         logInButton.setOnClickListener(v -> {
-            preformFirebaseLogin();
+            preformFirebaseLogin(view);
         });
     }
 
-    private void preformFirebaseLogin() {
-        inputEmail = findViewById(R.id.login_email_text);
-        inputPassword = findViewById(R.id.login_password_text);
-        progressDialog = new ProgressDialog(this);
+
+    private void preformFirebaseLogin(@NonNull View view) {
+        inputEmail = view.findViewById(R.id.login_email_text);
+        inputPassword = view.findViewById(R.id.login_password_text);
+        progressDialog = new ProgressDialog(getActivity());
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
@@ -164,12 +168,12 @@ public class LoginActivity extends AppCompatActivity{
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_LONG)
+                        Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_LONG)
                                 .show();
                         getToMainActivity();
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this, ""+task.getException(), Toast.LENGTH_LONG)
+                        Toast.makeText(getActivity(), ""+task.getException(), Toast.LENGTH_LONG)
                                 .show();
                     }
                 }
@@ -178,58 +182,14 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private void getToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-// TODO: uncomment this! (do not delete this piece of code!)
-    @Override
-    protected void onStart() {
-        // this function will activate if the user signed up with google before
-        super.onStart();
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            getToMainActivity();
-        }
     }
 
     private void googleSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         // TODO: deprecated: check what to do
         startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-
-        // Result returned from launching the Intent from FacebookActivity;
-        else {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
-            getToMainActivity();
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w("Error", "signInResult:failed code=" + e.getStatusCode());
-        }
     }
 }

@@ -1,4 +1,4 @@
-package postpc.finalproject.RoomInn.models.ui
+package postpc.finalproject.RoomInn.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,6 @@ import android.widget.RelativeLayout
 import android.view.View.OnTouchListener
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.RotateZoomImageViewFurniture

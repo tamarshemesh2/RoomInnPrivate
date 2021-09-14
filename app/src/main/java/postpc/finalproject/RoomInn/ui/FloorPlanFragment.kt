@@ -1,8 +1,6 @@
-package postpc.finalproject.RoomInn.models.ui
+package postpc.finalproject.RoomInn.ui
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.view.GravityCompat
@@ -21,10 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
-import postpc.finalproject.RoomInn.models.Bed
-import postpc.finalproject.RoomInn.models.Point3D
-import postpc.finalproject.RoomInn.models.RoomVectorFactory
-import postpc.finalproject.RoomInn.models.RoomVectorFactory.PathData
 import java.util.*
 
 
