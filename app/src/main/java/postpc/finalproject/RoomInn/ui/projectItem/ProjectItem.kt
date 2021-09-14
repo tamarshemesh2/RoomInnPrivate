@@ -1,6 +1,5 @@
-package postpc.finalproject.RoomInn.projectItem
+package postpc.finalproject.RoomInn.ui.projectItem
 
-import postpc.finalproject.RoomInn.furnitureCategoryItem.FurnitureCategoryItem
 import com.google.firebase.Timestamp
 
 

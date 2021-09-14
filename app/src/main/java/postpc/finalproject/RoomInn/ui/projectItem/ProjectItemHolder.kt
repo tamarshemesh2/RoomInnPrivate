@@ -1,4 +1,4 @@
-package postpc.finalproject.RoomInn.projectItem
+package postpc.finalproject.RoomInn.ui.projectItem
 
 import android.view.View
 import android.widget.ImageButton

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import postpc.finalproject.RoomInn.R
-import postpc.finalproject.RoomInn.projectItem.ProjectItemAdapter
+import postpc.finalproject.RoomInn.ui.projectItem.ProjectItemAdapter
 
 
 class ProfileFragment : Fragment() {

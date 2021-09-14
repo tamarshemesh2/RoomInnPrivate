@@ -1,14 +1,13 @@
-package postpc.finalproject.RoomInn.furnitureCategoryItem
+package postpc.finalproject.RoomInn.ui.furnitureCategoryItem
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
-import postpc.finalproject.RoomInn.models.Bed
-import postpc.finalproject.RoomInn.models.Point3D
+import postpc.finalproject.RoomInn.furnitureData.Bed
+import postpc.finalproject.RoomInn.furnitureData.Point3D
 
 
 class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemHolder>() {

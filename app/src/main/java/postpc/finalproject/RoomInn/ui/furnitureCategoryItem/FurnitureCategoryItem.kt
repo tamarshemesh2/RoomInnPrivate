@@ -1,7 +1,5 @@
-package postpc.finalproject.RoomInn.furnitureCategoryItem
+package postpc.finalproject.RoomInn.ui.furnitureCategoryItem
 
-import android.graphics.drawable.Drawable
-import java.sql.Timestamp // needs to be changed into firebase timestamp bellow
 //import com.google.firebase.Timestamp
 
 

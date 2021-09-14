@@ -6,15 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
-
 import android.widget.RelativeLayout
+
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
@@ -55,33 +55,23 @@ class FloorPlanFragment : Fragment() {
 
         // TODO: finish finding all the views
         // find all views
-        val canvas: RelativeLayout = view.findViewById(R.id.floorPlan)// Your Viewgroup
-        val addFab: FloatingActionButton = view.findViewById(R.id.addButton)
-        var toAddFurniture: Boolean = false
-        //add all furniture to board
-        for (fur in projectViewModel.room.furniture.values) {
-            FurnitureOnBoard(
-                projectViewModel,
-                requireContext(),
-                fur,
-                resources.getDrawable(R.drawable.ic_round_redo_24),
-                canvas,
-                fur.location.x,
-                fur.location.y
-            )
+        val roomCanvas: View? = view.findViewById(R.id.floorPlan)
+        val roomLayout: RelativeLayout = view.findViewById(R.id.floorPlanLayout)// Your Viewgroup
 
-        }
-        canvas.setBackgroundResource(R.drawable.floor_plan)
+        val addFab: ImageButton = view.findViewById(R.id.addButton)
+        var toAddFurniture = false
+        //add all furniture to board
+
         // find hamburger views:
         drawerLayout = view.findViewById(R.id.draw_layout)
         navigationView = view.findViewById(R.id.hamburger_settings_navigation_layout)
         hamburger = view.findViewById(R.id.hamburgerMenuButton)
 
 
-        canvas.setOnTouchListener { v, event ->
+        roomCanvas!!.setOnTouchListener { v, event ->
             if (toAddFurniture) {
-                projectViewModel.currentX = event.rawX
-                projectViewModel.currentY = event.rawY
+                projectViewModel.currentX = event.rawX - roomCanvas.x
+                projectViewModel.currentY = event.rawY - roomCanvas.y
                 projectViewModel.newFurniture = true
                 Navigation.findNavController(v)
                     .navigate(R.id.action_floorPlanFragment_to_addFurnitureFragment2)
@@ -93,8 +83,8 @@ class FloorPlanFragment : Fragment() {
             toAddFurniture = true
             Toast.makeText(
                 this.requireContext(),
-                "Tap where you wish to add new furniture",
-                Toast.LENGTH_LONG
+                "Tap where you wish to place a new furniture",
+                Toast.LENGTH_SHORT
             ).show();
         }
 

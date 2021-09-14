@@ -1,9 +1,9 @@
 package postpc.finalproject.RoomInn.ViewModle
 
 import androidx.lifecycle.ViewModel
-import postpc.finalproject.RoomInn.models.LoadingStage
 import postpc.finalproject.RoomInn.Room
-import postpc.finalproject.RoomInn.models.Furniture
+import postpc.finalproject.RoomInn.furnitureData.Furniture
+import postpc.finalproject.RoomInn.models.LoadingStage
 
 class ProjectViewModel: ViewModel() {
     var roomEnableFurnitureOnBoard: Boolean = false
