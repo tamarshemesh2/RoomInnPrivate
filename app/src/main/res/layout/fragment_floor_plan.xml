@@ -19,7 +19,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView"
-            android:name="com.postpc.myapplication.ui.FloorPlanInnerFragment"/>
+            android:name="postpc.finalproject.RoomInn.ui.FloorPlanInnerFragment"/>
         <RelativeLayout
             android:id="@+id/floorPlanLayout"
             android:layout_width="0dp"

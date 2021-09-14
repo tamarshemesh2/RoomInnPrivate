@@ -1,5 +1,7 @@
 package postpc.finalproject.RoomInn.ui.furnitureCategoryItem
 
+import android.content.Context
+import android.graphics.Path
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
@@ -14,12 +16,16 @@ class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemH
 
     private val _category: MutableList<FurnitureCategoryItem> = ArrayList()
     private lateinit var projectViewModel: ProjectViewModel
+    private lateinit var context: Context
 
     fun setViewModel(vm: ProjectViewModel) {
         projectViewModel = vm
     }
+    fun setContext(cxt: Context) {
+        context = cxt
+    }
 
-    fun setItems(items: Map<String, Int>) {
+    fun setItems(items: Map<String, Path>) {
         _category.clear()
         items.forEach { _category.add(FurnitureCategoryItem(it.key, it.value)) }
         notifyDataSetChanged()
@@ -35,9 +41,12 @@ class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemH
     override fun onBindViewHolder(holder: FurnitureCategoryItemHolder, position: Int) {
         val furnitureCategory = _category[position]
         holder.categoryTitle.text = furnitureCategory.furnitureCategory
-        holder.categoryImg.setImageResource(furnitureCategory.imageID);
-        holder.categoryImg.setOnClickListener {
-            projectViewModel.furniture = Bed(Point3D(projectViewModel.currentX, projectViewModel.currentY,0f))
+        if (!holder.categoryImg.isInit()) {
+            holder.categoryImg.setPath(furnitureCategory.imageID)
+            furnitureCategory.imageID
+        }
+        holder.bg.setOnClickListener {
+            projectViewModel.furniture = Bed(Point3D(projectViewModel.currentX, 0f,projectViewModel.currentY),scale = Point3D(190f,40f,60f))
             Navigation.findNavController(it)
                 .navigate(R.id.action_addFurnitureFragment2_to_editFurnitureFragment)
         }

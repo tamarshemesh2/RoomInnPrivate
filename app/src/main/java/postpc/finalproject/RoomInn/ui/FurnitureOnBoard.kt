@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.util.Size
 import android.widget.RelativeLayout
 import androidx.core.view.GestureDetectorCompat
-import com.postpc.myapplication.FurnitureCanvas
+import postpc.finalproject.RoomInn.FurnitureCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Furniture
 import postpc.finalproject.RoomInn.ui.gui_listeners.DragAndScaleListener

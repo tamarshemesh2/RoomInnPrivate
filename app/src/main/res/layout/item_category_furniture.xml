@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"/>
 
-    <com.postpc.myapplication.FurnitureCanvas
+    <postpc.finalproject.RoomInn.FurnitureCanvas
         android:id="@+id/category_img"
         android:layout_width="100dp"
         android:foregroundGravity="bottom"

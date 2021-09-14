@@ -1,4 +1,4 @@
-package com.postpc.myapplication
+package postpc.finalproject.RoomInn
 
 import android.content.Context
 import android.graphics.Canvas
