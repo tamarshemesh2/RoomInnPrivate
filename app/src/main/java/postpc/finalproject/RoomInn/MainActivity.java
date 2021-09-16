@@ -13,6 +13,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import postpc.finalproject.RoomInn.ViewModle.DBViewModel;
+import postpc.finalproject.RoomInn.models.RoomInnApplication;
+
 public class MainActivity extends AppCompatActivity {
     private String userId = null;
     FirebaseAuth mAuth;
@@ -27,13 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
-//            String personName = acct.getDisplayName();
-//            String personGivenName = acct.getGivenName();
-//            String personFamilyName = acct.getFamilyName();
-//            String personEmail = acct.getEmail();
             userId = acct.getId();
-//            Uri personPhoto = acct.getPhotoUrl();
-
             Log.d("login", "login with google id: " + userId);
         }
 
@@ -51,7 +48,17 @@ public class MainActivity extends AppCompatActivity {
             Log.d("login", "login with firebase id: " + userId);
 
         }
+
+        initializeDB();
+
     }
 
-
+    private void initializeDB() {
+        if (userId != null) {
+            RoomInnApplication.getInstance().getRoomsDB().initialize(userId);
+        } else {
+            Log.d("Firebase", "user in null");
+        }
     }
+
+}

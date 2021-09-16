@@ -1,4 +1,4 @@
-package postpc.finalproject.RoomInn;
+package postpc.finalproject.RoomInn.Launch;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import postpc.finalproject.RoomInn.ViewModle.LoginViewModel;
+import postpc.finalproject.RoomInn.MainActivity;
+import postpc.finalproject.RoomInn.R;
 
 public class LaunchActivity extends AppCompatActivity {
     int RC_SIGN_IN = 0;
