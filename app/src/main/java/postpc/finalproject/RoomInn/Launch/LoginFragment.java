@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -33,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import postpc.finalproject.RoomInn.MainActivity;
 import postpc.finalproject.RoomInn.R;
+import postpc.finalproject.RoomInn.ViewModle.LoginViewModel;
 
 public class LoginFragment extends Fragment {
 
@@ -40,7 +44,6 @@ public class LoginFragment extends Fragment {
     String validateEmailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}";
 
     private GoogleSignInClient mGoogleSignInClient;
-    private CallbackManager callbackManager;
     private LoginButton facebookLogInButton;
     Button registerButton;
     EditText inputEmail;
@@ -49,15 +52,17 @@ public class LoginFragment extends Fragment {
     ProgressDialog progressDialog;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    private LoginViewModel viewModel;
 
     public LoginFragment() {
         super(R.layout.login_fegment);
-        callbackManager = CallbackManager.Factory.create();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
         // user  is already logged in with facebook
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -102,7 +107,7 @@ public class LoginFragment extends Fragment {
 
 
 //        facebookLogInButton.setPermissions(Arrays.asList(...));
-        facebookLogInButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        facebookLogInButton.registerCallback(viewModel.getCallbackManager(), new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d("facebook login", "Success");
@@ -132,7 +137,7 @@ public class LoginFragment extends Fragment {
         registerButton.setOnClickListener(v -> {
             FragmentActivity activity = getActivity();
             activity.getSupportFragmentManager().beginTransaction()
-                    .replace(activity.findViewById(R.id.fragment_frame).getId(), new RegisterFragment())
+                    .replace(activity.findViewById(R.id.fragment_frame).getId(), viewModel.getRegisterFragment())
                     .commit();
         });
 

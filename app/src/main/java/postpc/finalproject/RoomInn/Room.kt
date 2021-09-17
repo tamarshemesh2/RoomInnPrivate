@@ -8,6 +8,7 @@ import postpc.finalproject.RoomInn.furnitureData.Door
 import postpc.finalproject.RoomInn.furnitureData.Furniture
 import postpc.finalproject.RoomInn.furnitureData.Point3D
 import postpc.finalproject.RoomInn.furnitureData.Window
+import java.util.*
 
 
 data class Room(
@@ -17,9 +18,12 @@ data class Room(
     var windows: MutableList<Window> = mutableListOf(),
     var doors: MutableList<Door> = mutableListOf(),
     private var displayRatio: Float = 1f,
+    var name: String = "Project Name",
+    var userId: String = "user id"
 ) {
     private var minX = 0f
     private var minZ = 0f
+    val id = UUID.randomUUID().toString()
 
     private fun getRoomSize(): Size {
         minX = Corners.first().x
@@ -41,7 +45,7 @@ data class Room(
         return Size((maxX - minX).toInt(), (maxZ - minZ).toInt())
     }
 
-    fun setRoomRatio(boardSize: Size) {
+    fun setSizeRoomRatio(boardSize: Size) {
         val roomSize = getRoomSize()
         displayRatio = minOf(
             (boardSize.width - 30) / roomSize.width.toFloat(),
@@ -57,7 +61,7 @@ data class Room(
         Log.d("yuval", "width: $boardWidth, height: $boardHeight")
         val path = Path()
         if (boardWidth != 0) {
-            setRoomRatio(Size(boardWidth, boardHeight))
+            setSizeRoomRatio(Size(boardWidth, boardHeight))
         }
         if (Corners.size > 0) {
             val last = Corners.last()

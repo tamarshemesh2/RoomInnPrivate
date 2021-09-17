@@ -54,14 +54,7 @@ class FloorPlanInnerFragment : Fragment() {
                 val width = layout.measuredWidth
                 val height = layout.measuredHeight
 //                layout.background = Color.BLUE.toDrawable()
-                val room = Room()
-                room.Corners = mutableListOf(
-                    Point3D(5f, 5f, 5f),
-                    Point3D(287.5f, 5f, 5f),
-                    Point3D(287.5f, 5f, 152f),
-                    Point3D(5f, 5f, 152f)
-                )
-                roomCanvas.setPath(room.drawFloorPlan(layout.measuredWidth, layout.measuredHeight))
+                roomCanvas.setPath(projectViewModel.room.drawFloorPlan(layout.measuredWidth, layout.measuredHeight))
                 loadingBar.visibility = View.GONE
                 for (fur in projectViewModel.room.furniture.values) {
                     FurnitureOnBoard(

@@ -4,10 +4,9 @@ import com.google.firebase.Timestamp
 
 
 data class ProjectItem(
-    val projectName: String,
-    val lastUpdate: Timestamp
+    val roomName: String,
 ) : Comparable<ProjectItem> {
     override fun compareTo(other: ProjectItem): Int {
-        return lastUpdate.compareTo(other.lastUpdate)
+        return roomName.compareTo(other.roomName)
     }
 }

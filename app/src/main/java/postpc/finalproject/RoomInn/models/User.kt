@@ -5,6 +5,6 @@ import postpc.finalproject.RoomInn.Room
 
 data class User(
         var id: String = "not initialised id",
-        val rooms: MutableLiveData<List<Room>> = MutableLiveData<List<Room>>()
+        var roomsList: MutableList<String> = mutableListOf() // string of the rooms names
 ) {
 }

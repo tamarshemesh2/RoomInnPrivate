@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -18,13 +20,14 @@ import com.google.android.gms.tasks.Task;
 
 import postpc.finalproject.RoomInn.MainActivity;
 import postpc.finalproject.RoomInn.R;
+import postpc.finalproject.RoomInn.ViewModle.LoginViewModel;
 
 public class LaunchActivity extends AppCompatActivity {
     int RC_SIGN_IN = 0;
 
     private Fragment loginFragment;
     private Fragment registerFragment;
-    private CallbackManager callbackManager;
+    private LoginViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +36,8 @@ public class LaunchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_launch);
         FragmentContainerView fragment = findViewById(R.id.fragment_frame);
 
-        callbackManager = CallbackManager.Factory.create();
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
 
@@ -48,10 +52,8 @@ public class LaunchActivity extends AppCompatActivity {
         // this function will activate if the user signed up with google before
         super.onStart();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            getToMainActivity();
-        }
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        getToMainActivity();
     }
 
     private void getToMainActivity() {
@@ -73,7 +75,7 @@ public class LaunchActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from FacebookActivity;
         else {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
+            viewModel.getCallbackManager().onActivityResult(requestCode, resultCode, data);
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
