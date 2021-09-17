@@ -153,14 +153,15 @@ class RoomsDB(context: Context) {
         firebase.collection("rooms").whereEqualTo("userId", user.id).whereEqualTo("name", roomName).get()
                 .addOnSuccessListener {
                     val documents = it.documents
+                    var room: Room ?= null
                     for (doc in documents) {
-                        val room: Room ?= doc.toObject(Room::class.java)
+                        room = doc.toObject(Room::class.java)
                         if (room != null){
                             roomsMap[roomName] = room
                             // TODO: how do we save the fractures?
                         }
                     }
-                    if (viewModel != null) {
+                    if (viewModel != null && room != null) {
                         viewModel.room = roomsMap[roomName]!!
                     }
                     loadRoomNavLambda()

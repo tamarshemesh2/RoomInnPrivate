@@ -1,7 +1,9 @@
 package postpc.finalproject.RoomInn.ui.projectItem
 
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -40,22 +42,39 @@ class ProjectItemAdapter : RecyclerView.Adapter<ProjectItemHolder>() {
     }
 
     override fun onBindViewHolder(holder: ProjectItemHolder, position: Int) {
-        val projectItem = _projects[position]
-        holder.projectName.text = projectItem.roomName
+        if (_projects.size == 0) {
+            holder.playButton.visibility = View.GONE
+            holder.editFabButton.visibility = View.GONE
+            holder.projectName.gravity = Gravity.CENTER
+            holder.projectName.text = "\n\nYou don't have any projects yet \n\n \uD83D\uDE31 \n\nPress on the add button below to get started!"
+            holder.border.visibility = View.GONE
+
+        }
+        else {
+            holder.playButton.visibility = View.VISIBLE
+            holder.editFabButton.visibility = View.VISIBLE
+            holder.projectName.gravity = Gravity.START
+            holder.border.visibility = View.VISIBLE
+            val projectItem = _projects[position]
+            holder.projectName.text = projectItem.roomName
 
 
-        holder.editFabButton.setOnClickListener {
-            RoomInnApplication.getInstance().getRoomsDB().loadRoomByName(projectItem.roomName, viewModel)
+            holder.editFabButton.setOnClickListener {
+                RoomInnApplication.getInstance().getRoomsDB().loadRoomByName(projectItem.roomName, viewModel)
+            }
         }
 
     //TODO:
     // 1. add option to edit the name of the project.
     // 2. add the 'play' button on click (after we create the play VR & fragment).
-
+    // 3. adding option to delete project using 'fling' (ask Yuval what the hell is fling)
 
     }
 
     override fun getItemCount(): Int {
+        if (_projects.size == 0) {
+            return 1
+        }
         return _projects.size
     }
 
