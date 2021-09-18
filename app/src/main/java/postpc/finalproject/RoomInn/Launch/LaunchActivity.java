@@ -47,14 +47,14 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     // TODO: uncomment this! (do not delete this piece of code!)
-//    @Override
-//    protected void onStart() {
-//        // this function will activate if the user signed up with google before
-//        super.onStart();
-//        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        getToMainActivity();
-//    }
+    @Override
+    protected void onStart() {
+        // this function will activate if the user signed up with google before
+        super.onStart();
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        getToMainActivity();
+    }
 
     private void getToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);

@@ -68,8 +68,8 @@ class FurnitureOnBoard(
         params.bottomMargin = 0
 
         val roomRatio = projectViewModel.room.getRoomRatio()
-        params.width = furniture.scale.x.toInt() * roomRatio.toInt()
-        params.height = furniture.scale.z.toInt() * roomRatio.toInt()
+        params.width = (furniture.scale.x * roomRatio).toInt()
+        params.height = (furniture.scale.z * roomRatio).toInt()
 
         params.rightMargin = params.leftMargin + 5 * params.width
         params.bottomMargin = params.topMargin + 10 * params.height
@@ -84,7 +84,8 @@ class FurnitureOnBoard(
 
     private fun createNewImageView() {
         imageView = FurnitureCanvas(context)
-        imageView.setPath(furniture.draw(Size(1, 1)))
+        val roomRatio = projectViewModel.room.getRoomRatio()
+        imageView.setPath(furniture.draw(10f,10f))
         imageView.setPaintColor(furniture.color)
         imageView.setBackgroundColor(Color.TRANSPARENT)
     }

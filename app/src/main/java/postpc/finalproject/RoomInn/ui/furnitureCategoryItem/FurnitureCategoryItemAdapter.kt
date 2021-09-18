@@ -2,6 +2,7 @@ package postpc.finalproject.RoomInn.ui.furnitureCategoryItem
 
 import android.content.Context
 import android.graphics.Path
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Bed
+import postpc.finalproject.RoomInn.furnitureData.Furniture
 import postpc.finalproject.RoomInn.furnitureData.Point3D
 
 
@@ -21,11 +23,12 @@ class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemH
     fun setViewModel(vm: ProjectViewModel) {
         projectViewModel = vm
     }
+
     fun setContext(cxt: Context) {
         context = cxt
     }
 
-    fun setItems(items: Map<String, Path>) {
+    fun setItems(items: Map<String, Furniture>) {
         _category.clear()
         items.forEach { _category.add(FurnitureCategoryItem(it.key, it.value)) }
         notifyDataSetChanged()
@@ -40,13 +43,14 @@ class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemH
 
     override fun onBindViewHolder(holder: FurnitureCategoryItemHolder, position: Int) {
         val furnitureCategory = _category[position]
+        val furnitureClass = furnitureCategory.furnitureClass
         holder.categoryTitle.text = furnitureCategory.furnitureCategory
         if (!holder.categoryImg.isInit()) {
-            holder.categoryImg.setPath(furnitureCategory.imageID)
-            furnitureCategory.imageID
+            val sizeToDraw = furnitureClass.getSizeToDraw(Size(270, 250))
+            holder.categoryImg.setPath(furnitureClass.draw(sizeToDraw.first,sizeToDraw.second))
         }
         holder.bg.setOnClickListener {
-            projectViewModel.furniture = Bed(Point3D(projectViewModel.currentX, 0f,projectViewModel.currentY),scale = Point3D(190f,40f,60f))
+            projectViewModel.furniture = furnitureClass
             Navigation.findNavController(it)
                 .navigate(R.id.action_addFurnitureFragment2_to_editFurnitureFragment)
         }
