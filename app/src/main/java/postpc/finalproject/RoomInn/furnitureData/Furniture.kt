@@ -15,6 +15,8 @@ abstract class Furniture(
     var color: Int = Color.GRAY,
     var id: String = UUID.randomUUID().toString()) {
 
+    var type: String = "unknown"
+    var roomId: String = "unknown"
     var unityFuncName: String = ""
     var freeScale: Boolean = false
 

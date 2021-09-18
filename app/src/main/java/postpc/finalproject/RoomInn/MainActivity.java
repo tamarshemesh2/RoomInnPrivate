@@ -100,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
         RoomsDB DB = RoomInnApplication.getInstance().getRoomsDB();
         DB.getRooms().removeObservers(this);
         DB.getUserLoadingStage().removeObservers(this);
-
+        DB.saveOnExit();
         super.onDestroy();
     }
+
+
 }

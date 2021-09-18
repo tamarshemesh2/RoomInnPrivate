@@ -10,7 +10,7 @@ import postpc.finalproject.RoomInn.ui.projectItem.ProjectItemAdapter
 
 class ProjectViewModel: ViewModel() {
     var roomEnableFurnitureOnBoard: Boolean = false
-    var room : Room = Room()
+    var room : Room = Room()  // TODO: change ro live data, so that each time it changes we save to the DB the room and the furniture of the room
     lateinit var projectName: String
     var loadingStage : LoadingStage = LoadingStage.SUCCESS
 

@@ -13,6 +13,7 @@ class Bed(
 ) : Furniture(position, rotation, scale, color) {
     init {
         unityFuncName = "addNewBed"
+        var type: String = "Bed"
     }
 
     override fun draw(sizeWidth:Float, sizeHeight:Float): Path {

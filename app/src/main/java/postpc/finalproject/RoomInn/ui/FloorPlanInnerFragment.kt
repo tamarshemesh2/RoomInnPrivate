@@ -16,6 +16,7 @@ import postpc.finalproject.RoomInn.RoomCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Point3D
 import kotlin.math.roundToInt
+import postpc.finalproject.RoomInn.models.RoomInnApplication
 
 
 class FloorPlanInnerFragment : Fragment() {
@@ -53,13 +54,16 @@ class FloorPlanInnerFragment : Fragment() {
             override fun onGlobalLayout() {
                 layout.viewTreeObserver
                     .removeOnGlobalLayoutListener(this)
+                roomCanvas.setPath(projectViewModel.room.drawFloorPlan(layout.measuredWidth, layout.measuredHeight))
                 loadingBar.visibility = View.GONE
                 val offsetToFit = projectViewModel.room.getOffsetToFit(layout.measuredWidth,layout.measuredHeight)
                 roomCanvas.offsetLeftAndRight(offsetToFit.first.roundToInt())
                 roomCanvas.offsetTopAndBottom(offsetToFit.second.roundToInt())
                 roomCanvas.setPath(projectViewModel.room.drawFloorPlan(layout.measuredWidth, layout.measuredHeight))
-                for (fur in projectViewModel.room.furniture.values) {
-                    FurnitureOnBoard(
+
+                for (furId in RoomInnApplication.getInstance().getRoomsDB().roomToFurnitureMap[projectViewModel.room.id]!!) {
+                    val fur = RoomInnApplication.getInstance().getRoomsDB().furnitureMap[furId]!!
+                    val t= FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),
                         fur,

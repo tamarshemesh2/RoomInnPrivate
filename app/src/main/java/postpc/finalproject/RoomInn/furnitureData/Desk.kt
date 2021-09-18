@@ -10,6 +10,7 @@ class Desk(position : Point3D = Point3D(),
            color : Int = Color.GRAY): Furniture(position,rotation, scale, color){
     init {
         unityFuncName = "addNewDesk"
+        var type: String = "Desk"
     }
 
     override fun draw(sizeWidth:Float, sizeHeight:Float): Path {

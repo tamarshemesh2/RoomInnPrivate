@@ -12,6 +12,8 @@ import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
+import postpc.finalproject.RoomInn.models.RoomInnApplication
+import postpc.finalproject.RoomInn.models.RoomsDB
 import top.defaults.colorpicker.ColorPickerPopup
 
 import top.defaults.colorpicker.ColorPickerPopup.ColorPickerObserver
@@ -93,7 +95,14 @@ class EditFurnitureFragment : Fragment() {
             furniture.scale.z = lengthEditText.text.toString().toFloat()
             furniture.scale.x = widthEditText.text.toString().toFloat()
             projectViewModel.furniture = furniture
-            projectViewModel.room.furniture[projectViewModel.furniture!!.id] = projectViewModel.furniture!!
+
+            // update the furniture in the DB
+            var DB: RoomsDB = RoomInnApplication.getInstance().getRoomsDB()
+            DB.furnitureMap[projectViewModel.furniture!!.id] = projectViewModel.furniture!!
+            if (projectViewModel.furniture!!.id !in DB.roomToFurnitureMap[projectViewModel.room.id]!!) {
+                DB.roomToFurnitureMap[projectViewModel.room.id]!!.add(projectViewModel.furniture!!.id)
+            }
+
             projectViewModel.roomEnableFurnitureOnBoard = freeRatioCheckBox.isChecked
 
             Navigation.findNavController(it)
