@@ -29,7 +29,6 @@ class GeneralGestureListener(
     }
 
     override fun onDoubleTap(e: MotionEvent): Boolean {
-        projectViewModel.furniture = furniture
         projectViewModel.newFurniture = false
         Navigation.findNavController(board)
             .navigate(R.id.action_floorPlanFragment_to_editFurnitureFragment)

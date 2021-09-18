@@ -89,7 +89,6 @@ class DragAndScaleListener(
                 params.bottomMargin = 0
                 params.rightMargin = params.leftMargin + 5 * params.width
                 params.bottomMargin = params.topMargin + 10 * params.height
-                fixing()
                 view.layoutParams = params
             } else if (mode == ZOOM) {
 
@@ -103,9 +102,12 @@ class DragAndScaleListener(
                     if (newDist > 10f) {
                         val scale = newDist / oldDist * view.scaleX
                         if (scale > 0.6) {
+                            // updates the furniture data according to the scale
+                            furniture.scale(newDist / oldDist)
                             scaleDiff = scale
                             view.scaleX = scale
                             view.scaleY = scale
+
                         }
                     }
                     x = event.rawX
@@ -116,7 +118,6 @@ class DragAndScaleListener(
                     params.bottomMargin = 0
                     params.rightMargin = params.leftMargin + 5 * params.width
                     params.bottomMargin = params.topMargin + 10 * params.height
-                    fixing()
                     view.layoutParams = params
                 }
             }
@@ -125,25 +126,6 @@ class DragAndScaleListener(
         return true
     }
 
-
-    private fun fixing() {
-        if (params.leftMargin < 0) {
-            params.leftMargin = 0
-            params.rightMargin = params.leftMargin + 5 * params!!.width
-        }
-        if (params.topMargin < 0) {
-            params.topMargin = 0
-            params.bottomMargin = params.topMargin + 10 * params!!.height
-        }
-        if (params.bottomMargin < 0) {
-            params.bottomMargin = 0
-            params.topMargin = 10 * params.height
-        }
-        if (params.rightMargin < 0) {
-            params.rightMargin = 0
-            params.leftMargin = 5 * params.height
-        }
-    }
 }
 
 

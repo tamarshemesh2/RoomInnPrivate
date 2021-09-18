@@ -42,11 +42,12 @@ class FurnitureOnBoard(
         // Set double tap listener.
         imageViewGestureDetectorCompat.setOnDoubleTapListener(imageViewGestureListener)
         // Set a new OnTouchListener to image view.
-        imageView.setOnTouchListener { v, motionEvent -> /* When image view ontouch event occurred, call it's gesture detector's onTouchEvent method. */
+        imageView.setOnTouchListener { v, motionEvent ->
+            projectViewModel.furniture=furniture
+            /* When image view ontouch event occurred, call it's gesture detector's onTouchEvent method. */
             if (!imageViewGestureDetectorCompat.onTouchEvent(motionEvent)) {
                 imageViewDragGestureListener.onTouch(v, motionEvent)
             }
-            furniture.scale((imageView.width/roomRatio)/furniture.scale.x)
 
             // update the furniture in the DB
             var DB: RoomsDB = RoomInnApplication.getInstance().getRoomsDB()
