@@ -11,10 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ProgressBar
 import postpc.finalproject.RoomInn.R
-import postpc.finalproject.RoomInn.Room
 import postpc.finalproject.RoomInn.RoomCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
-import postpc.finalproject.RoomInn.furnitureData.Point3D
 import kotlin.math.roundToInt
 import postpc.finalproject.RoomInn.models.RoomInnApplication
 
