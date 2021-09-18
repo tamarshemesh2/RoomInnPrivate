@@ -14,6 +14,7 @@ import postpc.finalproject.RoomInn.Room
 import postpc.finalproject.RoomInn.RoomCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Point3D
+import postpc.finalproject.RoomInn.models.RoomInnApplication
 
 
 class FloorPlanInnerFragment : Fragment() {
@@ -56,7 +57,8 @@ class FloorPlanInnerFragment : Fragment() {
 //                layout.background = Color.BLUE.toDrawable()
                 roomCanvas.setPath(projectViewModel.room.drawFloorPlan(layout.measuredWidth, layout.measuredHeight))
                 loadingBar.visibility = View.GONE
-                for (fur in projectViewModel.room.furniture.values) {
+                for (furId in RoomInnApplication.getInstance().getRoomsDB().roomToFurnitureMap[projectViewModel.room.id]!!) {
+                    var fur = RoomInnApplication.getInstance().getRoomsDB().furnitureMap[furId]!!
                     FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),

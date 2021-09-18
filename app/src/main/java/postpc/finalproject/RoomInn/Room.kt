@@ -14,7 +14,6 @@ import java.util.*
 data class Room(
     var Corners: MutableList<Point3D> = mutableListOf(),
     var Walls: MutableList<Wall> = mutableListOf(),
-    var furniture: MutableMap<String, Furniture> = mutableMapOf(),
     var windows: MutableList<Window> = mutableListOf(),
     var doors: MutableList<Door> = mutableListOf(),
     private var displayRatio: Float = 1f,

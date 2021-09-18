@@ -12,6 +12,7 @@ class Closet(
 ) : Furniture(position, rotation, scale, color) {
     init {
         unityFuncName = "addNewCloset"
+        var type: String = "Closet"
     }
 
     override fun draw(size: Size): Path {

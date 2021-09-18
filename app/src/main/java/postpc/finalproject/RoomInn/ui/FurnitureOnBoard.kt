@@ -9,6 +9,8 @@ import androidx.core.view.GestureDetectorCompat
 import postpc.finalproject.RoomInn.FurnitureCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Furniture
+import postpc.finalproject.RoomInn.models.RoomInnApplication
+import postpc.finalproject.RoomInn.models.RoomsDB
 import postpc.finalproject.RoomInn.ui.gui_listeners.DragAndScaleListener
 import postpc.finalproject.RoomInn.ui.gui_listeners.GeneralGestureListener
 
@@ -42,8 +44,14 @@ class FurnitureOnBoard(
             if (!imageViewGestureDetectorCompat.onTouchEvent(motionEvent)) {
                 imageViewDragGestureListener.onTouch(v, motionEvent)
             }
+
+            // update the furniture in the DB
+            var DB: RoomsDB = RoomInnApplication.getInstance().getRoomsDB()
             furniture = projectViewModel.furniture!!
-            projectViewModel.room.furniture[furniture.id] = furniture
+            DB.furnitureMap[furniture.id] = furniture
+            if (furniture.id !in DB.roomToFurnitureMap[projectViewModel.room.id]!!) {
+                DB.roomToFurnitureMap[projectViewModel.room.id]!!.add(furniture.id)
+            }
             // Return true to tell android OS this listener has consumed the event, do not need to pass the event to other listeners.
             true
         }

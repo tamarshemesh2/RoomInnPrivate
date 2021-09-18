@@ -6,13 +6,14 @@ import android.util.Size
 
 
 class Bed(
-    position: Point3D = Point3D(),
-    rotation: Point3D = Point3D(),
-    scale: Point3D = Point3D(1f, 1f, 1f),
-    color: Int = Color.GRAY
+        position: Point3D = Point3D(),
+        rotation: Point3D = Point3D(),
+        scale: Point3D = Point3D(1f, 1f, 1f),
+        color: Int = Color.GRAY,
 ) : Furniture(position, rotation, scale, color) {
     init {
         unityFuncName = "addNewBed"
+        var type: String = "Bed"
     }
 
     override fun draw(size: Size): Path {

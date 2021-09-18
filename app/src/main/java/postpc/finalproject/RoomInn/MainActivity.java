@@ -17,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import postpc.finalproject.RoomInn.ViewModle.DBViewModel;
 import postpc.finalproject.RoomInn.ViewModle.LoginViewModel;
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel;
 import postpc.finalproject.RoomInn.models.LoadingStage;
@@ -101,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
         RoomsDB DB = RoomInnApplication.getInstance().getRoomsDB();
         DB.getRooms().removeObservers(this);
         DB.getUserLoadingStage().removeObservers(this);
-
+        DB.saveOnExit();
         super.onDestroy();
     }
+
+
 }

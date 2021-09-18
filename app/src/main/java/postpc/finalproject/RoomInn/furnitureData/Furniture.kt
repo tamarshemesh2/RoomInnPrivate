@@ -10,8 +10,10 @@ abstract class Furniture(
     var rotation : Point3D,
     var scale : Point3D,
     var color: Int = Color.GRAY,
-    val id: String = UUID.randomUUID().toString()) {
+    var id: String = UUID.randomUUID().toString()) {
 
+    var type: String = "unknown"
+    var roomId: String = "unknown"
     var unityFuncName: String = ""
     var freeScale: Boolean = false
 

@@ -10,6 +10,7 @@ class Chair(position : Point3D = Point3D(),
             color : Int = Color.GRAY): Furniture(position,rotation, scale, color){
     init {
         unityFuncName = "addNewChair"
+        var type: String = "Chair"
     }
 
     override fun draw(size: Size): Path {

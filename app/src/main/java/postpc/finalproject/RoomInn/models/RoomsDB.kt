@@ -2,16 +2,13 @@ package postpc.finalproject.RoomInn.models
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import postpc.finalproject.RoomInn.Room
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
-import postpc.finalproject.RoomInn.furnitureData.Point3D
+import postpc.finalproject.RoomInn.furnitureData.*
 
 class RoomsDB(context: Context) {
     val context: Context = context
@@ -23,6 +20,11 @@ class RoomsDB(context: Context) {
     var roomsListenerLambda: () -> Unit = {}
     var loadRoomNavLambda: () -> Unit = {}
     var roomsMap: MutableMap<String, Room> = mutableMapOf()
+    var furnitureMap: MutableMap<String, Furniture> = mutableMapOf()
+    var roomToFurnitureMap: MutableMap<String, MutableList<String>> = mutableMapOf()
+
+    var isRoomLoaded : Boolean = false
+    var areFunitureLoaded : Boolean = false
 //    lateinit var Rooms:
 
     fun isInitialized() : Boolean {
@@ -35,7 +37,8 @@ class RoomsDB(context: Context) {
         var document = firebase.collection("users")
                 .document(id)
 
-        //TODO: remove this line!
+        // TODO: remove this lines:
+        user.roomsList = mutableListOf("project 1", "project 2", "project 3")
         val room1 = Room()
         room1.Corners = mutableListOf(
                 Point3D(5f, 5f, 5f),
@@ -67,6 +70,9 @@ class RoomsDB(context: Context) {
         createNewRoom(room2)
         createNewRoom(room3)
         Log.d("Rooms List: ", "list form DB is ${rooms.value}.")
+        // TODO: test for adding furniture! with yuval - add a furnitur manualy and checks that it's there
+
+        // TODO: end of section to delete
 
 
         document.set(user)
@@ -104,7 +110,6 @@ class RoomsDB(context: Context) {
                 isInitialized = true
             }
             setRoomsListListener()
-
         }
                 .addOnFailureListener {
                     userLoadingStage.value = LoadingStage.FAILURE
@@ -128,12 +133,20 @@ class RoomsDB(context: Context) {
     }
 
     fun setRoomsListListener() {
-        return rooms.observeForever {
+        rooms.observeForever {
             user.roomsList = it
             roomsListenerLambda()
             firebase.collection("users").document(user.id).set(user)
         }
     }
+
+//    fun setFurnitureListListener(viewModel : ProjectViewModel) {
+//        roomToFurnitureMap[viewModel.room.id]!!.observeForever {
+//            viewModel.room.furniture = it
+//            // todo: update some lambda??
+//            firebase.collection("rooms").document(viewModel.room.id).set(viewModel.room)
+//        }
+//    }
 
     /**
      * This function loade the roon into the room map, and updates the view model to hold the current room.
@@ -153,23 +166,80 @@ class RoomsDB(context: Context) {
         firebase.collection("rooms").whereEqualTo("userId", user.id).whereEqualTo("name", roomName).get()
                 .addOnSuccessListener {
                     val documents = it.documents
-                    var room: Room ?= null
+                    var room: Room? = null
                     for (doc in documents) {
                         room = doc.toObject(Room::class.java)
-                        if (room != null){
+                        if (room != null) {
                             roomsMap[roomName] = room
-                            // TODO: how do we save the fractures?
+                            addFurnitureToMap(room)
                         }
                     }
                     if (viewModel != null && room != null) {
                         viewModel.room = roomsMap[roomName]!!
                     }
-                    loadRoomNavLambda()
-                    userLoadingStage.value = LoadingStage.SUCCESS
+
+                    // change to success only if both room and it's furniture are loaded
+                    if (userLoadingStage.value == LoadingStage.LOADING) {
+                        isRoomLoaded = true
+                        if (areFunitureLoaded) {
+                            loadRoomNavLambda()
+                            userLoadingStage.value = LoadingStage.SUCCESS
+                            areFunitureLoaded = false
+                            isRoomLoaded = false
+                        }
+                    }
                 }
                 .addOnFailureListener {
                     userLoadingStage.value = LoadingStage.FAILURE
                 }
+    }
+
+    private fun addFurnitureToMap(room: Room, viewModel: ProjectViewModel?= null) {
+        roomToFurnitureMap[room.id] = mutableListOf()
+        firebase.collection("rooms").whereEqualTo("roomId", room.id).get()
+                .addOnSuccessListener {
+                    val documents = it.documents
+                    for (doc in documents) {
+                        val furniture = FurniturFactory(doc)
+                        if (furniture != null) {
+                            roomToFurnitureMap[room.id]!!.add(furniture.id)
+                            furnitureMap[room.id] = furniture
+                        }
+                    }
+                    // change to success only if both room and it's furniture are loaded
+                    if (userLoadingStage.value == LoadingStage.LOADING) {
+                        areFunitureLoaded = true
+                        if (isRoomLoaded) {
+                            loadRoomNavLambda()
+                            userLoadingStage.value = LoadingStage.SUCCESS
+                            areFunitureLoaded = false
+                            isRoomLoaded = false
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    // TODO: is this right?
+                    userLoadingStage.value = LoadingStage.FAILURE
+                }
+    }
+
+    private fun FurniturFactory(doc: DocumentSnapshot) : Furniture? {
+        return when(doc["type"]) {
+            "Bed" -> doc.toObject(Bed::class.java)
+            "Chair" -> doc.toObject(Chair::class.java)
+            "Desk" -> doc.toObject(Desk::class.java)
+            "Closet" -> doc.toObject(Closet::class.java)
+            else  -> null
+        }
+    }
+
+    fun saveOnExit() {
+        for ((roomName, room) in roomsMap) {
+            firebase.collection("rooms").document(room.id).set(room)
+        }
+        for ((furnitureId, furniture) in furnitureMap) {
+            firebase.collection("rooms").document(furnitureId).set(furniture)
+        }
     }
 
 
@@ -193,6 +263,5 @@ class RoomsDB(context: Context) {
 //                    userLoadingStage.value = LoadingStage.FAILURE
 //                }
 //    }
-
 
 }
