@@ -48,6 +48,9 @@ class EditFurnitureFragment : Fragment() {
         val freeRatioCheckBox = view.findViewById<CheckBox>(R.id.enable_ratio_checkbox)
         val furnitureImageView = view.findViewById<ImageView>(R.id.furniture_img)
         val saveFab = view.findViewById<FloatingActionButton>(R.id.save_fab)
+        val delFab = view.findViewById<FloatingActionButton>(R.id.delete_fab)
+
+        //TODO: support the delete button
 
         val furniture = projectViewModel.furniture!!
 
@@ -58,8 +61,12 @@ class EditFurnitureFragment : Fragment() {
         lengthEditText.setText(furniture.scale.z.toString())
         heightEditText.setText(furniture.scale.y.toString())
         rotateText.text = furniture.rotation.y.toString()
-        freeRatioCheckBox.isChecked = projectViewModel.roomEnableFurnitureOnBoard
-        //todo : choose furniture img according to type
+        widthEditText.isEnabled = furniture.freeScale
+        lengthEditText.isEnabled = furniture.freeScale
+        heightEditText.isEnabled = furniture.freeScale
+        furniture.freeScale = furniture.freeScale
+        freeRatioCheckBox.isChecked = furniture.freeScale
+
 
 
         colorBtn.setOnClickListener { v ->
@@ -102,11 +109,12 @@ class EditFurnitureFragment : Fragment() {
             if (projectViewModel.furniture!!.id !in DB.roomToFurnitureMap[projectViewModel.room.id]!!) {
                 DB.roomToFurnitureMap[projectViewModel.room.id]!!.add(projectViewModel.furniture!!.id)
             }
+            if (furniture.type in listOf<String>("Door","Window")){
+                Navigation.findNavController(it).popBackStack()
+            }else{
+                Navigation.findNavController(it).navigate(R.id.action_editFurnitureFragment_to_floorPlanFragment)
+            }
 
-            projectViewModel.roomEnableFurnitureOnBoard = freeRatioCheckBox.isChecked
-
-            Navigation.findNavController(it)
-                .navigate(R.id.action_editFurnitureFragment_to_floorPlanFragment)
         }
     }
 

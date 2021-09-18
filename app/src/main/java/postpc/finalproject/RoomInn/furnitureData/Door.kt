@@ -11,6 +11,9 @@ class Door(
     scale: Point3D = Point3D(80f, 206f, 80f),
     color: Int = Color.BLACK
 ) : Furniture(position, rotation, scale, Color.BLACK) {
+    init{
+        type = "Door"
+    }
     override fun draw(sizeWidth: Float, sizeHeight: Float): Path {
         val path = Path()
         val margin = 8f

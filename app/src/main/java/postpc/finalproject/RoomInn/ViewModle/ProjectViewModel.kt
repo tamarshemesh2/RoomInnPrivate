@@ -6,6 +6,7 @@ import postpc.finalproject.RoomInn.furnitureData.Furniture
 import postpc.finalproject.RoomInn.models.LoadingStage
 import postpc.finalproject.RoomInn.models.RoomInnApplication
 import postpc.finalproject.RoomInn.models.RoomInnApplication.Companion.getInstance
+import postpc.finalproject.RoomInn.ui.FurnitureOnBoard
 import postpc.finalproject.RoomInn.ui.projectItem.ProjectItemAdapter
 
 class ProjectViewModel: ViewModel() {
@@ -18,6 +19,9 @@ class ProjectViewModel: ViewModel() {
     var currentY : Float = 0f
     var furniture : Furniture? = null
     var newFurniture: Boolean = true
+
+    val doorsAndWindows = mutableListOf<FurnitureOnBoard>()
+
 
     val adapter: ProjectItemAdapter = ProjectItemAdapter()
 

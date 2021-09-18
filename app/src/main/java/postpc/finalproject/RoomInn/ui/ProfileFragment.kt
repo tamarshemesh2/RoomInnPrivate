@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
@@ -35,6 +36,7 @@ class ProfileFragment : Fragment() {
         // TODO: finish finding all the views
         // find all views
         val projectRecyclerView: RecyclerView = view.findViewById(R.id.projects_recycler)
+        val addProjectFab: FloatingActionButton = view.findViewById(R.id.fab_add)
 
         val junkMap = mapOf<String, Timestamp>(
             "project 1" to Timestamp.now(),
@@ -53,6 +55,11 @@ class ProfileFragment : Fragment() {
         // setup function to call from DB upon change the current rendered room
         RoomInnApplication.getInstance().getRoomsDB().loadRoomNavLambda = {
             Navigation.findNavController(view).navigate(R.id.action_profileFragment2_to_floorPlanFragment)
+        }
+        // needs to be changed to daniella's unity features
+        addProjectFab.setOnClickListener {
+            projectViewModel.doorsAndWindows.clear()
+            Navigation.findNavController(view).navigate(R.id.action_profileFragment2_to_floorPlanPlacingFragment)
         }
 
         // set the recycle view

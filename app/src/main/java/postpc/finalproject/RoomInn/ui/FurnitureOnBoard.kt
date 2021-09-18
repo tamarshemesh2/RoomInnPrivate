@@ -22,7 +22,8 @@ class FurnitureOnBoard(
     var furniture: Furniture,
     private val board: RelativeLayout,
     coorX: Float,
-    coorY: Float
+    coorY: Float,
+    withListeners: Boolean = true
 ) {
     val margin = 10
     val roomRatio = projectViewModel.room.getRoomRatio()
@@ -43,7 +44,7 @@ class FurnitureOnBoard(
         imageViewGestureDetectorCompat.setOnDoubleTapListener(imageViewGestureListener)
         // Set a new OnTouchListener to image view.
         imageView.setOnTouchListener { v, motionEvent ->
-            projectViewModel.furniture=furniture
+            projectViewModel.furniture = furniture
             /* When image view ontouch event occurred, call it's gesture detector's onTouchEvent method. */
             if (!imageViewGestureDetectorCompat.onTouchEvent(motionEvent)) {
                 imageViewDragGestureListener.onTouch(v, motionEvent)
@@ -71,8 +72,8 @@ class FurnitureOnBoard(
         params.rightMargin = 0
         params.bottomMargin = 0
 
-        params.width = (furniture.scale.x* roomRatio).roundToInt()+margin
-        params.height = (furniture.scale.z * roomRatio).roundToInt()+margin
+        params.width = (furniture.scale.x * roomRatio).roundToInt() + margin
+        params.height = (furniture.scale.z * roomRatio).roundToInt() + margin
 
         params.rightMargin = params.leftMargin + 5 * params.width
         params.bottomMargin = params.topMargin + 10 * params.height
@@ -81,13 +82,15 @@ class FurnitureOnBoard(
 
         imageView.x = -imageView.layoutParams.width.toFloat()
         imageView.y = -2.5f * imageView.layoutParams.height.toFloat()
-        addGeneralGestureListener()
+        if (withListeners) {
+            addGeneralGestureListener()
+        }
     }
 
 
     private fun createNewImageView() {
         imageView = FurnitureCanvas(context)
-        imageView.setPath(furniture.draw(roomRatio,roomRatio))
+        imageView.setPath(furniture.draw(roomRatio, roomRatio))
         imageView.setPaintColor(furniture.color)
         imageView.setBackgroundColor(Color.TRANSPARENT)
     }

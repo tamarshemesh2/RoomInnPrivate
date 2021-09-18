@@ -8,21 +8,26 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ProgressBar
-import postpc.finalproject.RoomInn.FurnitureCanvas
+import androidx.navigation.Navigation
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.RoomCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
+import postpc.finalproject.RoomInn.furnitureData.Door
+import postpc.finalproject.RoomInn.furnitureData.Point3D
+import postpc.finalproject.RoomInn.furnitureData.Window
 import kotlin.math.roundToInt
 import postpc.finalproject.RoomInn.models.RoomInnApplication
 
 
-class FloorPlanInnerFragment : Fragment() {
-    //2
+class FloorPlanPlacingFragment : Fragment() {
     companion object {
 
-        fun newInstance(): FloorPlanInnerFragment {
-            return FloorPlanInnerFragment()
+        fun newInstance(): FloorPlanPlacingFragment {
+            return FloorPlanPlacingFragment()
         }
     }
 
@@ -36,17 +41,18 @@ class FloorPlanInnerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        room.drawFloorPlan()
         // should be the viewModels room!
-        return inflater.inflate(R.layout.fragment_inner_floor_plan, container, false)
+        return inflater.inflate(R.layout.fragment_floor_plan_no_doors, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val layout = view.findViewById<RelativeLayout>(R.id.room_layout)
+        val layout = view.findViewById<RelativeLayout>(R.id.floorPlanLayout)
         val roomCanvas = view.findViewById<RoomCanvas>(R.id.room_canvas)
-        val loadingBar = view.findViewById<ProgressBar>(R.id.progress_bar)
-        loadingBar.visibility = View.VISIBLE
+        val addWindowBtn = view.findViewById<ImageButton>(R.id.addWindowButton)
+        val addDoorBtn = view.findViewById<ImageButton>(R.id.addDoorButton)
+        val doneFab = view.findViewById<FloatingActionButton>(R.id.done_fab)
+
         val vto = layout.viewTreeObserver
         vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -58,7 +64,6 @@ class FloorPlanInnerFragment : Fragment() {
                         layout.measuredHeight
                     )
                 )
-                loadingBar.visibility = View.GONE
                 val offsetToFit = projectViewModel.room.getOffsetToFit(
                     layout.measuredWidth,
                     layout.measuredHeight
@@ -71,40 +76,49 @@ class FloorPlanInnerFragment : Fragment() {
                         layout.measuredHeight
                     )
                 )
-                for (door in projectViewModel.room.doors) {
+                for (door in projectViewModel.doorsAndWindows){
                     FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),
-                        door,
+                        door.furniture,
                         layout,
-                        door.position.x,
-                        door.position.z, false
-                    )
+                        door.furniture.position.x,
+                        door.furniture.position.z)
                 }
-                for (window in projectViewModel.room.windows) {
-                    FurnitureOnBoard(
+                val location = Point3D(layout.measuredWidth / 2f, 0f, layout.measuredHeight / 2f)
+
+                addDoorBtn.setOnClickListener {
+                    projectViewModel.doorsAndWindows += FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),
-                        window,
+                        Door(position = location),
                         layout,
-                        window.position.x,
-                        window.position.z, false
+                        location.x,
+                        location.z
                     )
                 }
-                for (furId in RoomInnApplication.getInstance()
-                    .getRoomsDB().roomToFurnitureMap[projectViewModel.room.id]!!) {
-                    val fur = RoomInnApplication.getInstance().getRoomsDB().furnitureMap[furId]!!
-                    if (fur.type !in listOf("Window", "Door")) {
-                        val t = FurnitureOnBoard(
-                            projectViewModel,
-                            requireContext(),
-                            fur,
-                            layout,
-                            fur.position.x,
-                            fur.position.z
-                        )
+                addWindowBtn.setOnClickListener {
+                    projectViewModel.doorsAndWindows += FurnitureOnBoard(
+                        projectViewModel,
+                        requireContext(),
+                        Window(position = location),
+                        layout,
+                        location.x,
+                        location.z
+                    )
+                }
+                doneFab.setOnClickListener {
+                    for (item in projectViewModel.doorsAndWindows){
+                        if (item.furniture.type=="Door"){
+                            projectViewModel.room.doors += item.furniture as Door
+                        } else{
+                            projectViewModel.room.windows += item.furniture as Window
+                        }
                     }
+                    Navigation.findNavController(view).navigate(R.id.action_floorPlanPlacingFragment_to_floorPlanFragment)
                 }
+
+
             }
         })
 

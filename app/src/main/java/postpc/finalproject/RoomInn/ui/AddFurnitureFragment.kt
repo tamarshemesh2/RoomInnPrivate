@@ -42,8 +42,6 @@ class AddFurnitureFragment : Fragment() {
             "Chair" to (Chair(position = position)),
             "Closet" to (Closet(position = position)),
             "Desk" to (Desk(position = position)),
-            "Door" to (Door(position = position)),
-            "Window" to (Window(position = position)),
         )
         adapter.setViewModel(projectViewModel)
         adapter.setContext(requireContext())
