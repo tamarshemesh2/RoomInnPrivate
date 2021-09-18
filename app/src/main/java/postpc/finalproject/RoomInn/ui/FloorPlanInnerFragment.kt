@@ -1,6 +1,7 @@
 package postpc.finalproject.RoomInn.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,11 +52,9 @@ class FloorPlanInnerFragment : Fragment() {
             override fun onGlobalLayout() {
                 layout.viewTreeObserver
                     .removeOnGlobalLayoutListener(this)
-                val width = layout.measuredWidth
-                val height = layout.measuredHeight
-//                layout.background = Color.BLUE.toDrawable()
                 roomCanvas.setPath(projectViewModel.room.drawFloorPlan(layout.measuredWidth, layout.measuredHeight))
                 loadingBar.visibility = View.GONE
+
                 for (fur in projectViewModel.room.furniture.values) {
                     FurnitureOnBoard(
                         projectViewModel,
@@ -65,7 +64,6 @@ class FloorPlanInnerFragment : Fragment() {
                         fur.position.x,
                         fur.position.z
                     )
-
                 }
             }
         })

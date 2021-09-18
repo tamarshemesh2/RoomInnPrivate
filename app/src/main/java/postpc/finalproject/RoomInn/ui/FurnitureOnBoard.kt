@@ -76,7 +76,8 @@ class FurnitureOnBoard(
 
     private fun createNewImageView() {
         imageView = FurnitureCanvas(context)
-        imageView.setPath(furniture.draw(Size(1, 1)))
+        val roomRatio = projectViewModel.room.getRoomRatio()
+        imageView.setPath(furniture.draw(10f,10f))
         imageView.setPaintColor(furniture.color)
         imageView.setBackgroundColor(Color.TRANSPARENT)
     }

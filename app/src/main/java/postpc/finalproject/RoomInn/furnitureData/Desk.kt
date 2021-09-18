@@ -6,20 +6,20 @@ import android.util.Size
 
 class Desk(position : Point3D = Point3D(),
            rotation : Point3D = Point3D(),
-           scale : Point3D = Point3D(1f,1f,1f),
+           scale : Point3D = Point3D(100f,120f,60f),
            color : Int = Color.GRAY): Furniture(position,rotation, scale, color){
     init {
         unityFuncName = "addNewDesk"
     }
 
-    override fun draw(size: Size): Path {
+    override fun draw(sizeWidth:Float, sizeHeight:Float): Path {
         val path = Path()
-        val margin = 15f
+        val margin = 8f
         path.addRect(
             margin,
             margin,
-            (scale.x * size.width) + margin,
-            (scale.z * size.height)+margin,
+            (scale.x * sizeWidth) + margin,
+            (scale.z * sizeHeight)+margin,
             Path.Direction.CCW
         )
         return path

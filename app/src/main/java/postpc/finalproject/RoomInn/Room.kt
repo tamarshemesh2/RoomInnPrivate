@@ -58,7 +58,6 @@ data class Room(
     }
 
     fun drawFloorPlan(boardWidth: Int = 0, boardHeight: Int = 0): Path {
-        Log.d("yuval", "width: $boardWidth, height: $boardHeight")
         val path = Path()
         if (boardWidth != 0) {
             setSizeRoomRatio(Size(boardWidth, boardHeight))

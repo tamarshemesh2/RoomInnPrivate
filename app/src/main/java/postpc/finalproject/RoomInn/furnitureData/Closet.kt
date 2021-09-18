@@ -7,40 +7,41 @@ import android.util.Size
 class Closet(
     position: Point3D = Point3D(),
     rotation: Point3D = Point3D(),
-    scale: Point3D = Point3D(1f, 1f, 1f),
+    scale: Point3D = Point3D(80f, 180f, 55f),
     color: Int = Color.GRAY
 ) : Furniture(position, rotation, scale, color) {
     init {
         unityFuncName = "addNewCloset"
     }
 
-    override fun draw(size: Size): Path {
+
+    override fun draw(sizeWidth:Float, sizeHeight:Float): Path {
         val path = Path()
-        val margin = 15f
+        val margin = 8f
         path.addRect(
             margin,
             margin,
-            (scale.x * size.width) + margin/2,
-            ((scale.z * size.height) / 2f) + margin,
+            (scale.x * sizeWidth) + margin/2,
+            ((scale.z * sizeHeight) / 2f) + margin,
             Path.Direction.CCW
         )
-        path.moveTo(((scale.x * size.width) + margin) / 2, ((scale.z * size.height) / 2f) + margin)
-        path.lineTo(((scale.x * size.width) + margin) / 2, margin)
-        path.moveTo(((scale.x * size.width) + margin/2), ((scale.z * size.height) / 2f) + margin)
+        path.moveTo(((scale.x * sizeWidth) + margin) / 2, ((scale.z * sizeHeight) / 2f) + margin)
+        path.lineTo(((scale.x * sizeWidth) + margin) / 2, margin)
+        path.moveTo(((scale.x * sizeWidth) + margin/2), ((scale.z * sizeHeight) / 2f) + margin)
         path.arcTo(
-            ((scale.x * size.width) + margin) / 2,
-            ((scale.z * size.height) / 3f),
-            (scale.x * size.width) + margin,
-            ((scale.z * size.height * 2) / 3f) + margin,
-            120f, 45f, false)
-        path.moveTo((margin), ((scale.z * size.height) / 2f) + margin)
+            ((scale.x * sizeWidth) + margin) / 2,
+            ((scale.z * sizeHeight) / 3f),
+            (scale.x * sizeWidth) + margin,
+            ((scale.z * sizeHeight * 2) / 3f) + margin,
+            120f, 50f, false)
+        path.moveTo((margin), ((scale.z * sizeHeight) / 2f) + margin)
 
         path.arcTo(
             (margin) ,
-            ((scale.z * size.height) / 3f),
-            ((scale.x * size.width) + margin) / 2,
-            ((scale.z * size.height * 2) / 3f) + margin,
-            60f, -45f, false)
+            ((scale.z * sizeHeight) / 3f),
+            ((scale.x * sizeWidth) + margin) / 2,
+            ((scale.z * sizeHeight * 2) / 3f) + margin,
+            60f, -50f, false)
         return path
     }
 }

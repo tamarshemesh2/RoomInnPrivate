@@ -106,7 +106,6 @@ class DragAndScaleListener(
                             scaleDiff = scale
                             view.scaleX = scale
                             view.scaleY = scale
-                            furniture.scale(scale)
                         }
                     }
                     x = event.rawX
