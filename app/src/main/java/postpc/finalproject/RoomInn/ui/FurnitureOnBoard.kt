@@ -11,6 +11,7 @@ import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Furniture
 import postpc.finalproject.RoomInn.ui.gui_listeners.DragAndScaleListener
 import postpc.finalproject.RoomInn.ui.gui_listeners.GeneralGestureListener
+import kotlin.math.roundToInt
 
 @SuppressLint("ClickableViewAccessibility")
 class FurnitureOnBoard(
@@ -21,7 +22,8 @@ class FurnitureOnBoard(
     coorX: Float,
     coorY: Float
 ) {
-
+    val margin = 10
+    val roomRatio = projectViewModel.room.getRoomRatio()
     private lateinit var imageView: FurnitureCanvas
 
     /* Use GestureDetectorCompat to detect general gesture take place on the image view. */
@@ -41,8 +43,10 @@ class FurnitureOnBoard(
         imageView.setOnTouchListener { v, motionEvent -> /* When image view ontouch event occurred, call it's gesture detector's onTouchEvent method. */
             if (!imageViewGestureDetectorCompat.onTouchEvent(motionEvent)) {
                 imageViewDragGestureListener.onTouch(v, motionEvent)
+                furniture.scale((imageView.width/roomRatio)/furniture.scale.x)
+            }else{
+                furniture = projectViewModel.furniture!!
             }
-            furniture = projectViewModel.furniture!!
             projectViewModel.room.furniture[furniture.id] = furniture
             // Return true to tell android OS this listener has consumed the event, do not need to pass the event to other listeners.
             true
@@ -59,9 +63,8 @@ class FurnitureOnBoard(
         params.rightMargin = 0
         params.bottomMargin = 0
 
-        val roomRatio = projectViewModel.room.getRoomRatio()
-        params.width = furniture.scale.x.toInt() * roomRatio.toInt()
-        params.height = furniture.scale.z.toInt() * roomRatio.toInt()
+        params.width = (furniture.scale.x* roomRatio).roundToInt()+margin
+        params.height = (furniture.scale.z * roomRatio).roundToInt()+margin
 
         params.rightMargin = params.leftMargin + 5 * params.width
         params.bottomMargin = params.topMargin + 10 * params.height
@@ -76,8 +79,7 @@ class FurnitureOnBoard(
 
     private fun createNewImageView() {
         imageView = FurnitureCanvas(context)
-        val roomRatio = projectViewModel.room.getRoomRatio()
-        imageView.setPath(furniture.draw(10f,10f))
+        imageView.setPath(furniture.draw(roomRatio,roomRatio))
         imageView.setPaintColor(furniture.color)
         imageView.setBackgroundColor(Color.TRANSPARENT)
     }

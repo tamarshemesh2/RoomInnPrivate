@@ -25,5 +25,11 @@ abstract class Furniture(
         val ratioSize = min(size.height/(scale.z),size.width/scale.x)
         return Pair(ratioSize,ratioSize)
     }
+    open fun getOffsetToFit(windowWidth: Int, windowHeight:Int):Pair<Float,Float>{
+        val first = getSizeToDraw(Size(windowWidth.toInt(), windowHeight.toInt())).first
+        val heightMargin = (windowHeight - (first * scale.z)) / 2
+        val widthMargin = (windowWidth - (first * scale.x)) / 2
+        return Pair(widthMargin,heightMargin)
+    }
     abstract fun draw(sizeWidth:Float, sizeHeight: Float): Path
 }

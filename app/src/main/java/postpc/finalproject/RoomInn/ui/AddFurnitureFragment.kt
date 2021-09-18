@@ -1,9 +1,7 @@
 package postpc.finalproject.RoomInn.ui
 
 import android.annotation.SuppressLint
-import android.graphics.Path
 import android.os.Bundle
-import android.util.Size
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,18 +36,18 @@ class AddFurnitureFragment : Fragment() {
         // TODO: finish finding all the views
         // find all views
         val furnitureRecyclerView: RecyclerView = view.findViewById(R.id.furniture_recycler)
-
-        val junkMap = mapOf<String, Furniture>(
-            "Bed" to (Bed()),
-            "Chair" to (Chair()),
-            "Closet" to (Closet()),
-            "Desk" to (Desk()),
-            "Door" to (Door()),
-            "Window" to (Window()),
+        val position = Point3D(projectViewModel.currentX,0f,projectViewModel.currentY)
+        val defaultItems = mapOf<String, Furniture>(
+            "Bed" to (Bed(position = position)),
+            "Chair" to (Chair(position = position)),
+            "Closet" to (Closet(position = position)),
+            "Desk" to (Desk(position = position)),
+            "Door" to (Door(position = position)),
+            "Window" to (Window(position = position)),
         )
         adapter.setViewModel(projectViewModel)
         adapter.setContext(requireContext())
-        adapter.setItems(junkMap)
+        adapter.setItems(defaultItems)
 
         // set the recycle view
         furnitureRecyclerView.adapter = adapter

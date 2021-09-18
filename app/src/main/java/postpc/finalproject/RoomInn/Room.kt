@@ -45,6 +45,13 @@ data class Room(
         return Size((maxX - minX).toInt(), (maxZ - minZ).toInt())
     }
 
+    fun getOffsetToFit(windowWidth: Int, windowHeight:Int):Pair<Float,Float>{
+        val roomSize = getRoomSize()
+        val heightMargin = (windowHeight - (roomSize.height * displayRatio)) / 2
+        val widthMargin = (windowWidth - (roomSize.width * displayRatio)) / 2
+        return Pair(widthMargin,heightMargin)
+    }
+
     fun setSizeRoomRatio(boardSize: Size) {
         val roomSize = getRoomSize()
         displayRatio = minOf(

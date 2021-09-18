@@ -5,6 +5,7 @@ import android.graphics.Path
 import android.util.Size
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import postpc.finalproject.RoomInn.R
@@ -12,6 +13,7 @@ import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Bed
 import postpc.finalproject.RoomInn.furnitureData.Furniture
 import postpc.finalproject.RoomInn.furnitureData.Point3D
+import kotlin.math.roundToInt
 
 
 class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemHolder>() {
@@ -46,8 +48,25 @@ class FurnitureCategoryItemAdapter : RecyclerView.Adapter<FurnitureCategoryItemH
         val furnitureClass = furnitureCategory.furnitureClass
         holder.categoryTitle.text = furnitureCategory.furnitureCategory
         if (!holder.categoryImg.isInit()) {
-            val sizeToDraw = furnitureClass.getSizeToDraw(Size(270, 250))
-            holder.categoryImg.setPath(furnitureClass.draw(sizeToDraw.first,sizeToDraw.second))
+            val vto = holder.categoryImg.viewTreeObserver
+            vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    holder.categoryImg.viewTreeObserver
+                        .removeOnGlobalLayoutListener(this)
+                    val sizeToDraw = furnitureClass.getSizeToDraw(
+                        Size(holder.categoryImg.width-10,
+                            holder.categoryImg.height-15))
+                    val offsetToFit = furnitureClass.getOffsetToFit(holder.categoryImg.width-10,holder.categoryImg.height-15)
+                    holder.categoryImg.offsetLeftAndRight(offsetToFit.first.roundToInt())
+                    holder.categoryImg.offsetTopAndBottom(offsetToFit.second.roundToInt())
+                    holder.categoryImg.setPath(
+                        furnitureClass.draw(
+                            sizeToDraw.first,
+                            sizeToDraw.second
+                        )
+                    )
+                }
+            })
         }
         holder.bg.setOnClickListener {
             projectViewModel.furniture = furnitureClass
