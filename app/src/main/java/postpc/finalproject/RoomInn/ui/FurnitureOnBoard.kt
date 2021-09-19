@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.Size
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.core.view.GestureDetectorCompat
 import postpc.finalproject.RoomInn.FurnitureCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
@@ -80,8 +81,7 @@ class FurnitureOnBoard(
 
         imageView.rotation = furniture.rotation.y
 
-        imageView.x = -imageView.layoutParams.width.toFloat()
-        imageView.y = -2.5f * imageView.layoutParams.height.toFloat()
+
         if (withListeners) {
             addGeneralGestureListener()
         }

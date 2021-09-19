@@ -64,7 +64,7 @@ public class RegisterFragment extends Fragment {
             repeatPassword.setError("password dose not match");
         } else {
             progressDialog.setTitle("Registration");
-            progressDialog.setMessage("Please waite");
+            progressDialog.setMessage("Please wait");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 

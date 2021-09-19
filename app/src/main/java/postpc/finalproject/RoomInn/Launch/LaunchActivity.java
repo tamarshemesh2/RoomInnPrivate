@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -53,7 +52,7 @@ public class LaunchActivity extends AppCompatActivity {
         super.onStart();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        getToMainActivity();
+//        getToMainActivity();
     }
 
     private void getToMainActivity() {

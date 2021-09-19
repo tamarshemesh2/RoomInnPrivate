@@ -10,8 +10,7 @@ import postpc.finalproject.RoomInn.Room
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.*
 
-class RoomsDB(context: Context) {
-    val context: Context = context
+class RoomsDB(val context: Context) {
     private var firebase: FirebaseFirestore= FirebaseFirestore.getInstance()
     lateinit var user: User
     private var isInitialized: Boolean = false
@@ -24,8 +23,7 @@ class RoomsDB(context: Context) {
     var roomToFurnitureMap: MutableMap<String, MutableList<String>> = mutableMapOf()
 
     var isRoomLoaded : Boolean = false
-    var areFunitureLoaded : Boolean = false
-//    lateinit var Rooms:
+    var areFurnitureLoaded : Boolean = false
 
     fun isInitialized() : Boolean {
         return isInitialized
@@ -34,7 +32,7 @@ class RoomsDB(context: Context) {
     fun createNewUser(id: String) {
         FirebaseApp.initializeApp(context)
         userLoadingStage.value = LoadingStage.LOADING
-        var document = firebase.collection("users")
+        val document = firebase.collection("users")
                 .document(id)
 
         // TODO: remove this lines:
@@ -49,10 +47,10 @@ class RoomsDB(context: Context) {
         room1.name = "project 1"
         val room2 = Room()
         room2.Corners = mutableListOf(
-                Point3D(5f, 5f, 5f),
-                Point3D(100f, 5f, 5f),
-                Point3D(100f, 5f, 152f),
-                Point3D(5f, 5f, 152f)
+                Point3D(-0.015324175357818604f,-0.8654714822769165f,1.9097247123718262f).multiply(100f),
+                Point3D(0.8313037157058716f,-1.3702747821807862f,-0.5127741098403931f).multiply(100f),
+                Point3D(-2.139707326889038f,-0.8447096347808838f,-1.2366341352462769f).multiply(100f),
+                Point3D(-2.084784984588623f,-0.5958563089370728f,1.5056521892547608f).multiply(100f)
         )
         room2.name = "project 2"
         val room3 = Room()
@@ -181,10 +179,10 @@ class RoomsDB(context: Context) {
                     // change to success only if both room and it's furniture are loaded
                     if (userLoadingStage.value == LoadingStage.LOADING) {
                         isRoomLoaded = true
-                        if (areFunitureLoaded) {
+                        if (areFurnitureLoaded) {
                             loadRoomNavLambda()
                             userLoadingStage.value = LoadingStage.SUCCESS
-                            areFunitureLoaded = false
+                            areFurnitureLoaded = false
                             isRoomLoaded = false
                         }
                     }
@@ -196,7 +194,7 @@ class RoomsDB(context: Context) {
 
     private fun addFurnitureToMap(room: Room, viewModel: ProjectViewModel?= null) {
         roomToFurnitureMap[room.id] = mutableListOf()
-        firebase.collection("rooms").whereEqualTo("roomId", room.id).get()
+        firebase.collection("furniture").whereEqualTo("roomId", room.id).get()
                 .addOnSuccessListener {
                     val documents = it.documents
                     for (doc in documents) {
@@ -208,11 +206,11 @@ class RoomsDB(context: Context) {
                     }
                     // change to success only if both room and it's furniture are loaded
                     if (userLoadingStage.value == LoadingStage.LOADING) {
-                        areFunitureLoaded = true
+                        areFurnitureLoaded = true
                         if (isRoomLoaded) {
                             loadRoomNavLambda()
                             userLoadingStage.value = LoadingStage.SUCCESS
-                            areFunitureLoaded = false
+                            areFurnitureLoaded = false
                             isRoomLoaded = false
                         }
                     }
@@ -238,7 +236,7 @@ class RoomsDB(context: Context) {
             firebase.collection("rooms").document(room.id).set(room)
         }
         for ((furnitureId, furniture) in furnitureMap) {
-            firebase.collection("rooms").document(furnitureId).set(furniture)
+            firebase.collection("furniture").document(furnitureId).set(furniture)
         }
     }
 

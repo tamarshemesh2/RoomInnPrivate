@@ -28,6 +28,13 @@ class GeneralGestureListener(
         return true
     }
 
+    override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        furniture.rotation.y += 45
+        furniture.rotation.y %= 360
+        imageView.rotation = furniture.rotation.y
+        return super.onSingleTapConfirmed(e)
+    }
+
     override fun onDoubleTap(e: MotionEvent): Boolean {
         projectViewModel.newFurniture = false
         if (furniture.type in listOf("Door", "Window")) {

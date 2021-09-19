@@ -2,14 +2,17 @@ package postpc.finalproject.RoomInn.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Size
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import postpc.finalproject.RoomInn.FurnitureCanvas
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.models.RoomInnApplication
@@ -17,6 +20,7 @@ import postpc.finalproject.RoomInn.models.RoomsDB
 import top.defaults.colorpicker.ColorPickerPopup
 
 import top.defaults.colorpicker.ColorPickerPopup.ColorPickerObserver
+import kotlin.math.roundToInt
 
 
 class EditFurnitureFragment : Fragment() {
@@ -46,13 +50,33 @@ class EditFurnitureFragment : Fragment() {
         val rotateBtn = view.findViewById<ImageButton>(R.id.rotate_btn)
 
         val freeRatioCheckBox = view.findViewById<CheckBox>(R.id.enable_ratio_checkbox)
-        val furnitureImageView = view.findViewById<ImageView>(R.id.furniture_img)
+        val furnitureImageView = view.findViewById<FurnitureCanvas>(R.id.furniture_img)
         val saveFab = view.findViewById<FloatingActionButton>(R.id.save_fab)
         val delFab = view.findViewById<FloatingActionButton>(R.id.delete_fab)
 
         //TODO: support the delete button
 
         val furniture = projectViewModel.furniture!!
+
+        val vto = furnitureImageView.viewTreeObserver
+        vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                furnitureImageView.viewTreeObserver
+                    .removeOnGlobalLayoutListener(this)
+                val sizeToDraw = furniture.getSizeToDraw(
+                    Size(furnitureImageView.height-20,
+                        furnitureImageView.height-20)
+                )
+                furnitureImageView.setPath(
+                    furniture.draw(
+                        sizeToDraw.first,
+                        sizeToDraw.second
+                    )
+                )
+            }
+        })
+        furnitureImageView.rotation = furniture.rotation.y
+
 
 
         colorBtn.setColorFilter(furniture.color)
@@ -93,8 +117,9 @@ class EditFurnitureFragment : Fragment() {
         }
 
         rotateBtn.setOnClickListener {
-            furniture.rotation.y = (furniture.rotation.y + 90) % 360
+            furniture.rotation.y = (furniture.rotation.y + 45) % 360
             rotateText.text = furniture.rotation.y.toString()
+            furnitureImageView.rotation = furniture.rotation.y
         }
 
         saveFab.setOnClickListener {
