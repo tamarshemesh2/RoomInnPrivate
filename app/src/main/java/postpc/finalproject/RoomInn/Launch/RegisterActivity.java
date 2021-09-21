@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
             repeatPassword.setError("password dose not match");
         } else {
             progressDialog.setTitle("Registration");
-            progressDialog.setMessage("Please waite");
+            progressDialog.setMessage("Please wait");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 
@@ -74,12 +74,12 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterActivity.this, "registration successful", Toast.LENGTH_LONG)
+                            Toast.makeText(RegisterActivity.this, "registration successful", Toast.LENGTH_SHORT)
                                     .show();
                             getToMainActivity();
                         } else {
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterActivity.this, ""+task.getException(), Toast.LENGTH_LONG)
+                            Toast.makeText(RegisterActivity.this, ""+task.getException(), Toast.LENGTH_SHORT)
                                     .show();
                         }
                     }

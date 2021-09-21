@@ -2,17 +2,18 @@ package postpc.finalproject.RoomInn.furnitureData
 
 import android.graphics.Color
 import android.graphics.Path
-import android.util.Size
 
 class Closet(
     position: Point3D = Point3D(),
     rotation: Point3D = Point3D(),
-    scale: Point3D = Point3D(80f, 180f, 55f),
-    color: Int = Color.GRAY
+    scale: Point3D = Point3D(150f, 180f, 50f),
+    color: Int = Color.GRAY,
+    roomId: String = ""
 ) : Furniture(position, rotation, scale, color) {
     init {
         unityFuncName = "addNewCloset"
-        var type: String = "Closet"
+        type = "Closet"
+        this.roomId = roomId
     }
 
 

@@ -14,24 +14,28 @@
             android:id="@+id/floorPlanLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
             app:layout_constraintBottom_toTopOf="@id/addWindowButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView" />
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
         <postpc.finalproject.RoomInn.RoomCanvas
             android:id="@+id/room_canvas"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
             app:layout_constraintBottom_toTopOf="@id/addWindowButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView" />
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

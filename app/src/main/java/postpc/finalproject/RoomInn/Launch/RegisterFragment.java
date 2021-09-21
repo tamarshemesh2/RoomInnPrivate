@@ -74,12 +74,12 @@ public class RegisterFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 progressDialog.dismiss();
-                                Toast.makeText(getActivity(), "registration successful", Toast.LENGTH_LONG)
+                                Toast.makeText(getActivity(), "registration successful", Toast.LENGTH_SHORT)
                                         .show();
                                 getToMainActivity();
                             } else {
                                 progressDialog.dismiss();
-                                Toast.makeText(getActivity(), ""+task.getException(), Toast.LENGTH_LONG)
+                                Toast.makeText(getActivity(), ""+task.getException(), Toast.LENGTH_SHORT)
                                         .show();
                             }
                         }

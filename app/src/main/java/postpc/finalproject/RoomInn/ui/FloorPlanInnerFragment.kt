@@ -9,12 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ProgressBar
-import postpc.finalproject.RoomInn.FurnitureCanvas
 import postpc.finalproject.RoomInn.R
 import postpc.finalproject.RoomInn.RoomCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
-import kotlin.math.roundToInt
 import postpc.finalproject.RoomInn.models.RoomInnApplication
+import kotlin.math.roundToInt
 
 
 class FloorPlanInnerFragment : Fragment() {
@@ -47,6 +46,7 @@ class FloorPlanInnerFragment : Fragment() {
         val roomCanvas = view.findViewById<RoomCanvas>(R.id.room_canvas)
         val loadingBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         loadingBar.visibility = View.VISIBLE
+
         val vto = layout.viewTreeObserver
         vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -58,51 +58,51 @@ class FloorPlanInnerFragment : Fragment() {
                         layout.measuredHeight
                     )
                 )
+
                 loadingBar.visibility = View.GONE
-                val offsetToFit = projectViewModel.room.getOffsetToFit(
-                    layout.measuredWidth,
-                    layout.measuredHeight
-                )
-                roomCanvas.offsetLeftAndRight(offsetToFit.first.roundToInt())
-                roomCanvas.offsetTopAndBottom(offsetToFit.second.roundToInt())
-                roomCanvas.setPath(
-                    projectViewModel.room.drawFloorPlan(
-                        layout.measuredWidth,
-                        layout.measuredHeight
-                    )
-                )
+                val roomRatio = projectViewModel.room.getRoomRatio()
+                layout.getLocationOnScreen(projectViewModel.layoutMeasures)
+
                 for (door in projectViewModel.room.doors) {
+                    val relativeLocation =
+                        door.position.getRelativeLocation(roomRatio, intArrayOf(0,0))
                     FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),
                         door,
                         layout,
-                        door.position.x,
-                        door.position.z, false
+                        relativeLocation.x,
+                        relativeLocation.z, false
                     )
                 }
                 for (window in projectViewModel.room.windows) {
+                    val relativeLocation =
+                        window.position.getRelativeLocation(roomRatio, intArrayOf(0,0))
                     FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),
                         window,
                         layout,
-                        window.position.x,
-                        window.position.z, false
+                        relativeLocation.x,
+                        relativeLocation.z, false
                     )
                 }
                 for (furId in RoomInnApplication.getInstance()
                     .getRoomsDB().roomToFurnitureMap[projectViewModel.room.id]!!) {
-                    val fur = RoomInnApplication.getInstance().getRoomsDB().furnitureMap[furId]!!
-                    if (fur.type !in listOf("Window", "Door")) {
-                        val t = FurnitureOnBoard(
-                            projectViewModel,
-                            requireContext(),
-                            fur,
-                            layout,
-                            fur.position.x,
-                            fur.position.z
-                        )
+                    val fur = RoomInnApplication.getInstance().getRoomsDB().furnitureMap[furId]
+                    if (fur != null) {
+                        if (fur.type !in listOf("Window", "Door")) {
+                            val relativeLocation =
+                                fur.position.getRelativeLocation(roomRatio, intArrayOf(0,0))
+                            FurnitureOnBoard(
+                                projectViewModel,
+                                requireContext(),
+                                fur,
+                                layout,
+                                relativeLocation.x,
+                                relativeLocation.z
+                            )
+                        }
                     }
                 }
             }

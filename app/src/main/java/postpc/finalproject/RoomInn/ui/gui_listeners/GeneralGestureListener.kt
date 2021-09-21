@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.navigation.Navigation
 import postpc.finalproject.RoomInn.FurnitureCanvas
 import postpc.finalproject.RoomInn.R
@@ -19,14 +20,6 @@ class GeneralGestureListener(
 ) :
     SimpleOnGestureListener() {
 
-    override fun onScroll(
-        e1: MotionEvent,
-        e2: MotionEvent,
-        distanceX: Float,
-        distanceY: Float
-    ): Boolean {
-        return true
-    }
 
     override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
         furniture.rotation.y += 45
@@ -47,7 +40,5 @@ class GeneralGestureListener(
         return true
     }
 
-    override fun onLongPress(e: MotionEvent) {
-    }
 
 }

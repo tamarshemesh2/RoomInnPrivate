@@ -36,13 +36,17 @@ class AddFurnitureFragment : Fragment() {
         // TODO: finish finding all the views
         // find all views
         val furnitureRecyclerView: RecyclerView = view.findViewById(R.id.furniture_recycler)
-        val position = Point3D(projectViewModel.currentX,0f,projectViewModel.currentY)
-        val defaultItems = mapOf<String, Furniture>(
-            "Bed" to (Bed(position = position)),
-            "Chair" to (Chair(position = position)),
-            "Closet" to (Closet(position = position)),
-            "Desk" to (Desk(position = position)),
+        val position = projectViewModel.currentPosition
+
+        val defaultItems = mapOf(
+            "Bed" to (Bed(position = Point3D(position), roomId = projectViewModel.room.id)),
+            "Chair" to (Chair(position = Point3D(position), roomId = projectViewModel.room.id)),
+            "Closet" to (Closet(position = Point3D(position), roomId = projectViewModel.room.id)),
+            "Desk" to (Desk(position = Point3D(position), roomId = projectViewModel.room.id)),
         )
+        defaultItems.forEach {
+            it.value.position = it.value.position.add(Point3D(it.value.scale).multiply(-0.5f))
+        }
         adapter.setViewModel(projectViewModel)
         adapter.setContext(requireContext())
         adapter.setItems(defaultItems)

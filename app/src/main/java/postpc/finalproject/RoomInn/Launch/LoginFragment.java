@@ -163,7 +163,7 @@ public class LoginFragment extends Fragment {
             inputPassword.setError("Enter proper password");
         } else {
             progressDialog.setTitle("Login");
-            progressDialog.setMessage("Please waite");
+            progressDialog.setMessage("Please wait");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 
@@ -172,12 +172,12 @@ public class LoginFragment extends Fragment {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         progressDialog.dismiss();
-                        Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_LONG)
+                        Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT)
                                 .show();
                         getToMainActivity();
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(getActivity(), ""+task.getException(), Toast.LENGTH_LONG)
+                        Toast.makeText(getActivity(), ""+task.getException(), Toast.LENGTH_SHORT)
                                 .show();
                     }
                 }

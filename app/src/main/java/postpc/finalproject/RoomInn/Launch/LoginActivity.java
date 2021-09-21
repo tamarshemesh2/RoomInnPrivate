@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity{
             inputPassword.setError("Enter proper password");
         } else {
             progressDialog.setTitle("Login");
-            progressDialog.setMessage("Please waite");
+            progressDialog.setMessage("Please wait");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 
@@ -167,12 +167,12 @@ public class LoginActivity extends AppCompatActivity{
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_LONG)
+                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT)
                                 .show();
                         getToMainActivity();
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this, ""+task.getException(), Toast.LENGTH_LONG)
+                        Toast.makeText(LoginActivity.this, ""+task.getException(), Toast.LENGTH_SHORT)
                                 .show();
                     }
                 }

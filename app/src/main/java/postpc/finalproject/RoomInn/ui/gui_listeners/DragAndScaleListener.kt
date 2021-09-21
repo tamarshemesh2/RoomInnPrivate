@@ -2,16 +2,18 @@ package postpc.finalproject.RoomInn.ui.gui_listeners
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import postpc.finalproject.RoomInn.FurnitureCanvas
 import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Furniture
-import kotlin.math.atan2
-import kotlin.math.roundToInt
+import postpc.finalproject.RoomInn.furnitureData.Point3D
 import kotlin.math.sqrt
 
 /**
@@ -22,17 +24,16 @@ class DragAndScaleListener(
     private var projectViewModel: ProjectViewModel,
     private var furniture: Furniture,
     private var board: RelativeLayout,
-    private val imageView: FurnitureCanvas
-) : OnTouchListener {
+    private val imageView: FurnitureCanvas,
+
+    ) : OnTouchListener {
     private val NONE = 0
     private val DRAG = 1
     private val ZOOM = 2
 
     private var mode = NONE
     private var oldDist = 1f
-    private var d = 0f
-    var newRot = 0f
-    var scaleDiff = 0f
+    private var scaleDiff = 0f
 
     var params = imageView.layoutParams as RelativeLayout.LayoutParams
     var startWidth = 0
@@ -41,7 +42,9 @@ class DragAndScaleListener(
     var dy = 0f
     var x = 0f
     var y = 0f
-    var angle = 0f
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private val roomRatio = projectViewModel.room.getRoomRatio()
 
 
     private fun spacing(event: MotionEvent): Float {
@@ -50,13 +53,7 @@ class DragAndScaleListener(
         return sqrt((x * x + y * y).toDouble()).toFloat()
     }
 
-    private fun rotation(event: MotionEvent): Float {
-        val delta_x = (event.getX(0) - event.getX(1)).toDouble()
-        val delta_y = (event.getY(0) - event.getY(1)).toDouble()
-        val radians = atan2(delta_y, delta_x)
-        return (Math.toDegrees(radians) / 90).roundToInt().toFloat() * 90
-    }
-
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         val view = v as ImageView
@@ -74,10 +71,12 @@ class DragAndScaleListener(
                 oldDist = spacing(event)
                 if (oldDist > 10f) {
                     mode = ZOOM
+                } else {
+                    Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show()
                 }
-                d = rotation(event)
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> mode = NONE
+
             MotionEvent.ACTION_MOVE -> if (mode == DRAG) {
                 x = event.rawX
                 y = event.rawY
@@ -93,9 +92,6 @@ class DragAndScaleListener(
             } else if (mode == ZOOM) {
 
                 if (event.pointerCount == 2) {
-                    newRot = rotation(event)
-                    val r = newRot - d
-                    angle = r
                     x = event.rawX
                     y = event.rawY
                     val newDist = spacing(event)
@@ -112,16 +108,22 @@ class DragAndScaleListener(
                     }
                     x = event.rawX
                     y = event.rawY
-                    params.leftMargin = (x - dx + scaleDiff).toInt()
-                    params.topMargin = (y - dy + scaleDiff).toInt()
+                    params.leftMargin = (x - dx - (scaleDiff)).toInt()
+                    params.topMargin = (y - dy - (scaleDiff)).toInt()
                     params.rightMargin = 0
                     params.bottomMargin = 0
                     params.rightMargin = params.leftMargin + 5 * params.width
                     params.bottomMargin = params.topMargin + 10 * params.height
                     view.layoutParams = params
+
                 }
             }
         }
+        furniture.position = Point3D(
+            params.leftMargin.toFloat(),
+            furniture.position.y,
+            params.topMargin.toFloat()
+        ).toAbsolutLocation(roomRatio, intArrayOf(0,0))
         projectViewModel.furniture = furniture
         return true
     }

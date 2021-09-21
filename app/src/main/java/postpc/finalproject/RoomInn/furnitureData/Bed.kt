@@ -2,19 +2,20 @@ package postpc.finalproject.RoomInn.furnitureData
 
 import android.graphics.Color
 import android.graphics.Path
-import android.util.Size
+import java.util.*
 
 
 class Bed(
     position: Point3D = Point3D(),
     rotation: Point3D = Point3D(),
-    scale: Point3D = Point3D(140f, 40f, 190f),
-    color: Int = Color.GRAY
+    scale: Point3D = Point3D(150f, 40f, 200f),
+    color: Int = Color.GRAY,
+    roomId: String = ""
 ) : Furniture(position, rotation, scale, color) {
     init {
         unityFuncName = "addNewBed"
-        var type: String = "Bed"
-    }
+        type = "Bed"
+        this.roomId = roomId    }
 
     override fun draw(sizeWidth:Float, sizeHeight:Float): Path {
         val path = Path()

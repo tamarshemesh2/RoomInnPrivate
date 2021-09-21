@@ -12,27 +12,28 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/floorPlan"
+            android:name="postpc.finalproject.RoomInn.ui.FloorPlanInnerFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/addButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView"
-            android:name="postpc.finalproject.RoomInn.ui.FloorPlanInnerFragment"/>
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
         <RelativeLayout
             android:id="@+id/floorPlanLayout"
+            android:name="com.postpc.myapplication.ui.FloorPlanInnerFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/addButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView"
-            android:name="com.postpc.myapplication.ui.FloorPlanInnerFragment"/>
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -42,6 +43,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/deleteImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button"
+            android:backgroundTint="#80B30101"
+            android:minHeight="80dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:src="@drawable/ic_baseline_delete_outline_24"
+            app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/titleTextView"
+            app:layout_constraintTop_toTopOf="@id/titleTextView"
+            android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/undoButton"
@@ -84,12 +102,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:contentDescription="TODO"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/addButton"
             app:layout_constraintStart_toStartOf="@id/addButton"
             app:maxImageSize="@dimen/design_fab_size_normal"
-            app:srcCompat="@drawable/ic_round_play_arrow_24"
-            android:contentDescription="TODO" />
+            app:srcCompat="@drawable/ic_round_play_arrow_24" />
 
 
         <ImageButton
@@ -99,10 +117,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@android:color/transparent"
+            android:contentDescription="TODO"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_round_menu_24"
-            android:contentDescription="TODO" />
+            app:srcCompat="@drawable/ic_round_menu_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

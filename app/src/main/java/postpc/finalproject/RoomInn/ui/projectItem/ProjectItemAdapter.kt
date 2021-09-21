@@ -61,6 +61,7 @@ class ProjectItemAdapter : RecyclerView.Adapter<ProjectItemHolder>() {
 
             holder.editFabButton.setOnClickListener {
                 RoomInnApplication.getInstance().getRoomsDB().loadRoomByName(projectItem.roomName, viewModel)
+                viewModel!!.projectName = projectItem.roomName
             }
         }
 

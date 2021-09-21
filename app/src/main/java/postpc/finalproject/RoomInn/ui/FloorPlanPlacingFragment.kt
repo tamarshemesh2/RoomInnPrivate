@@ -1,5 +1,6 @@
 package postpc.finalproject.RoomInn.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ProgressBar
+import androidx.annotation.RequiresApi
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import postpc.finalproject.RoomInn.R
@@ -19,8 +19,6 @@ import postpc.finalproject.RoomInn.ViewModle.ProjectViewModel
 import postpc.finalproject.RoomInn.furnitureData.Door
 import postpc.finalproject.RoomInn.furnitureData.Point3D
 import postpc.finalproject.RoomInn.furnitureData.Window
-import kotlin.math.roundToInt
-import postpc.finalproject.RoomInn.models.RoomInnApplication
 
 
 class FloorPlanPlacingFragment : Fragment() {
@@ -55,67 +53,64 @@ class FloorPlanPlacingFragment : Fragment() {
 
         val vto = layout.viewTreeObserver
         vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            @RequiresApi(Build.VERSION_CODES.Q)
             override fun onGlobalLayout() {
                 layout.viewTreeObserver
                     .removeOnGlobalLayoutListener(this)
                 roomCanvas.setPath(
-                    projectViewModel.room.drawFloorPlan(
-                        layout.measuredWidth,
-                        layout.measuredHeight
-                    )
-                )
-                val offsetToFit = projectViewModel.room.getOffsetToFit(
-                    layout.measuredWidth,
-                    layout.measuredHeight
-                )
-                roomCanvas.offsetLeftAndRight(offsetToFit.first.roundToInt())
-                roomCanvas.offsetTopAndBottom(offsetToFit.second.roundToInt())
-                roomCanvas.setPath(
-                    projectViewModel.room.drawFloorPlan(
-                        layout.measuredWidth,
-                        layout.measuredHeight
-                    )
-                )
-                for (door in projectViewModel.doorsAndWindows){
+                    projectViewModel.room.drawFloorPlan(layout.measuredWidth,layout.measuredHeight))
+
+                layout.getLocationOnScreen(projectViewModel.layoutMeasures)
+
+                val roomRatio = projectViewModel.room.getRoomRatio()
+
+                for (door in projectViewModel.doorsAndWindows) {
+                    val relativeLocation =
+                        door.furniture.position.getRelativeLocation(roomRatio, intArrayOf(0,0))
                     FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),
                         door.furniture,
                         layout,
-                        door.furniture.position.x,
-                        door.furniture.position.z)
+                        relativeLocation.x,
+                        relativeLocation.z
+                    )
                 }
-                val location = Point3D(layout.measuredWidth / 2f, 0f, layout.measuredHeight / 2f)
+
+                val roomCenter = Point3D(projectViewModel.room.getRoomCenter())
+                val windLocation = Point3D(roomCenter).apply { this.y = 120f }
+                val roomCenterRelative = roomCenter.getRelativeLocation(roomRatio,  intArrayOf(0,0))
 
                 addDoorBtn.setOnClickListener {
                     projectViewModel.doorsAndWindows += FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),
-                        Door(position = location),
+                        Door(position = roomCenter),
                         layout,
-                        location.x,
-                        location.z
+                        roomCenterRelative.x,
+                        roomCenterRelative.z
                     )
                 }
                 addWindowBtn.setOnClickListener {
                     projectViewModel.doorsAndWindows += FurnitureOnBoard(
                         projectViewModel,
                         requireContext(),
-                        Window(position = location),
+                        Window(position = windLocation),
                         layout,
-                        location.x,
-                        location.z
+                        roomCenterRelative.x,
+                        roomCenterRelative.z
                     )
                 }
                 doneFab.setOnClickListener {
-                    for (item in projectViewModel.doorsAndWindows){
-                        if (item.furniture.type=="Door"){
+                    for (item in projectViewModel.doorsAndWindows) {
+                        if (item.furniture.type == "Door") {
                             projectViewModel.room.doors += item.furniture as Door
-                        } else{
+                        } else {
                             projectViewModel.room.windows += item.furniture as Window
                         }
                     }
-                    Navigation.findNavController(view).navigate(R.id.action_floorPlanPlacingFragment_to_floorPlanFragment)
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_floorPlanPlacingFragment_to_floorPlanFragment)
                 }
 
 

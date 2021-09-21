@@ -22,8 +22,8 @@ class FurnitureOnBoard(
     private val context: Context,
     var furniture: Furniture,
     private val board: RelativeLayout,
-    coorX: Float,
-    coorY: Float,
+    coorX: Float,//relative location
+    coorY: Float,//relative location
     withListeners: Boolean = true
 ) {
     val margin = 10
@@ -35,7 +35,8 @@ class FurnitureOnBoard(
         // This gesture listener is used with the image view.
         val imageViewGestureListener =
             GeneralGestureListener(context, projectViewModel, furniture, board, imageView)
-
+        val layoutLocation= intArrayOf(0,0)
+        board.getLocationOnScreen(layoutLocation)
         val imageViewDragGestureListener =
             DragAndScaleListener(context, projectViewModel, furniture, board, imageView)
         // Create image view gesture detector.
@@ -52,7 +53,7 @@ class FurnitureOnBoard(
             }
 
             // update the furniture in the DB
-            var DB: RoomsDB = RoomInnApplication.getInstance().getRoomsDB()
+            val DB: RoomsDB = RoomInnApplication.getInstance().getRoomsDB()
             furniture = projectViewModel.furniture!!
             DB.furnitureMap[furniture.id] = furniture
             if (furniture.id !in DB.roomToFurnitureMap[projectViewModel.room.id]!!) {
@@ -67,14 +68,16 @@ class FurnitureOnBoard(
 
         createNewImageView()
         board.addView(imageView)
+
         val params = imageView.layoutParams as RelativeLayout.LayoutParams
-        params.leftMargin = coorX.toInt()
-        params.topMargin = coorY.toInt()
-        params.rightMargin = 0
-        params.bottomMargin = 0
 
         params.width = (furniture.scale.x * roomRatio).roundToInt() + margin
         params.height = (furniture.scale.z * roomRatio).roundToInt() + margin
+
+        params.leftMargin = (coorX).toInt()
+        params.topMargin = (coorY).toInt()
+        params.rightMargin = 0
+        params.bottomMargin = 0
 
         params.rightMargin = params.leftMargin + 5 * params.width
         params.bottomMargin = params.topMargin + 10 * params.height
@@ -87,12 +90,10 @@ class FurnitureOnBoard(
         }
     }
 
-
     private fun createNewImageView() {
         imageView = FurnitureCanvas(context)
-        imageView.setPath(furniture.draw(roomRatio, roomRatio))
         imageView.setPaintColor(furniture.color)
+        imageView.setPath(furniture.draw(roomRatio, roomRatio))
         imageView.setBackgroundColor(Color.TRANSPARENT)
     }
-
 }
